@@ -1,7 +1,8 @@
 from django.urls import path
 from django.shortcuts import redirect
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 def home_redirect(request):
     return redirect('login')
 
@@ -51,3 +52,4 @@ urlpatterns = [
     #PLAY GAME
     path('play/<int:game_id>/', views.play_game, name='play_game'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
