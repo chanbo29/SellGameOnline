@@ -26,10 +26,9 @@ SECRET_KEY = 'django-insecure-rddq14cfj$^&!lxyler9+65ssssl1x&jsfeif3$6#2n9qxi7*e
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'sell-game-online.vercel.app',
     '.vercel.app',
-    'localhost',
-    '127.0.0.1',
+    'sell-game-online.vercel.app',
+    'sell-game-online-git-main-chhengchanbowu-2008s-projects.vercel.app',
 ]
 
 
