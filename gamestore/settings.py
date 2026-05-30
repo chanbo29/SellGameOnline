@@ -31,7 +31,14 @@ ALLOWED_HOSTS = [
     'sell-game-online-git-main-chhengchanbowu-2008s-projects.vercel.app',
 ]
 
-
+ALLOWED_HOSTS = [
+    '.onrender.com',
+    '.vercel.app',
+    'sellgameonline-1.onrender.com',
+    'sell-game-online.vercel.app',
+    'localhost',
+    '127.0.0.1',
+]
 # Application definition
 
 INSTALLED_APPS = [
