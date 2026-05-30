@@ -1295,7 +1295,7 @@
                 <a href="/game/{{ game.id }}/"
                 class="search-result-item">
                     {% if game.image %}
-                    <img src="{{ game.image.url }}">
+                    <img src="{% static 'games/' %}{{ game.image.name|cut:'games/' }}">
                     {% endif %}
                     <div class="search-result-info">
                         <h4>{{ game.title }}</h4>
@@ -1349,7 +1349,11 @@
             </div>
             {% endif %}
             {% if game.image %}
-                <img src="{{ game.image.url }}" class="game-image">
+                <img
+                    src="{% static 'games/' %}{{ game.image.name|cut:'games/' }}"
+                    class="game-image"
+                    alt="{{ game.title }}"
+                >
             {% else %}
                 <img src="https://cms-assets.xboxservices.com/assets/3e/29/3e294a2c-66ef-4ba5-90fb-53dda66b88ea.jpg?n=0399951111277_GLP-Page-Hero-1084_1920x1080_02.jpg"
                      class="game-image">
