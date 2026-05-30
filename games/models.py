@@ -33,7 +33,7 @@ class Game(models.Model):
         choices=GAME_TYPES,
         default='Action'
     )
-
+    image_name = models.CharField(max_length=255)
     image = models.ImageField(
         upload_to='games/',
         blank=True,

@@ -1348,14 +1348,16 @@
                 OWNED
             </div>
             {% endif %}
-            {% if game.image %}
-                {% load static %}
+           {% for game in games %}
 
-                    <img
-                        src="{% static 'images/' %}{{ game.image.name|cut:'games/' }}"
-                        class="game-image"
-                        alt="{{ game.title }}"
-                    >
+            <p style="color:red;">{{ game.image.name }}</p>
+
+            <img
+                src="{% static 'images/' %}{{ game.image.name|cut:'games/' }}"
+                class="game-image"
+                alt="{{ game.title }}">
+
+            <h3>{{ game.title }}</h3>
             {% else %}
                 <img src="https://cms-assets.xboxservices.com/assets/3e/29/3e294a2c-66ef-4ba5-90fb-53dda66b88ea.jpg?n=0399951111277_GLP-Page-Hero-1084_1920x1080_02.jpg"
                      class="game-image">
