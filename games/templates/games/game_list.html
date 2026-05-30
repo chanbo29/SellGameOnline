@@ -1338,30 +1338,43 @@
     {% for game in games %}
     <div class="game-card searchable-card">
         <div class="game-image-wrapper">
-            {% if game.discount_percent > 0 %}
-            <div class="discount">
-                -{{ game.discount_percent }}%
-            </div>
-            {% endif %}
-            {% if game.id in purchased_game_ids %}
-            <div class="owned-top">
-                OWNED
-            </div>
-            {% endif %}
-           {% for game in games %}
 
-            <p style="color:red;">{{ game.image.name }}</p>
+    {% if game.discount_percent > 0 %}
+    <div class="discount">
+        -{{ game.discount_percent }}%
+    </div>
+    {% endif %}
+
+    {% if game.id in purchased_game_ids %}
+    <div class="owned-top">
+        OWNED
+    </div>
+    {% endif %}
+
+    {% if game.image %}
+        {% load static %}
 
 <img
-    src="{% static 'images/' %}{{ game.image.name|cut:'games/' }}"
+    src="{% static 'images/' %}{{ game.image_name }}"
     class="game-image"
     alt="{{ game.title }}"
-    onerror="this.src='https://cms-assets.xboxservices.com/assets/3e/29/3e294a2c-66ef-4ba5-90fb-53dda66b88ea.jpg';">
+>
+            <p style="color:red;">
+    {{ game.image.url }}
+</p>
+    {% else %}
+        <img
+            src="https://via.placeholder.com/600x300?text=No+Image"
+            class="game-image"
+            alt="{{ game.title }}">
+    {% endif %}
 
-            <a href="/wishlist/add/{{ game.id }}/" class="heart-wishlist">
-                ♡
-            </a>
-        </div>
+    <a href="/wishlist/add/{{ game.id }}/"
+       class="heart-wishlist">
+        ♡
+    </a>
+
+</div>
         <div class="game-info">
             <h3 class="game-title">
                 {{ game.title }}

@@ -52,4 +52,8 @@ urlpatterns = [
     #PLAY GAME
     path('play/<int:game_id>/', views.play_game, name='play_game'),
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
