@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SellGame Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+:root{
+    --bg:#030712;
+    --panel:#07111d;
+    --panel2:#0b1624;
+    --border:#16304a;
+    --blue:#00aaff;
+    --green:#7CFF28;
+    --purple:#a855f7;
+    --orange:#f59e0b;
+    --red:#ff4757;
+    --muted:#8b9bb0;
+    --white:#ffffff;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 18% 8%,rgba(0,170,255,.15),transparent 28%),
+        radial-gradient(circle at 80% 0%,rgba(124,255,40,.08),transparent 30%),
+        linear-gradient(135deg,#020617,#06111f 55%,#030712);
+    color:white;
+    overflow-x:hidden;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    height:100vh;
+    position:sticky;
+    top:0;
+    padding:25px 20px;
+    background:linear-gradient(180deg,#050d19,#06101d);
+    border-right:1px solid rgba(0,170,255,.12);
+    box-shadow:20px 0 60px rgba(0,0,0,.35);
+}
+
+.logo-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:38px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:900;
+    color:white;
+    text-decoration:none;
+}
+
+.logo span{
+    color:#00aaff;
+}
+
+.collapse-btn{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.1);
+    background:#081624;
+    color:white;
+    cursor:pointer;
+}
+
+.menu-label{
+    color:#8090a5;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1.4px;
+    margin-bottom:16px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.menu a{
+    height:58px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:0 18px;
+    border-radius:16px;
+    color:#c8d4e0;
+    text-decoration:none;
+    font-weight:800;
+    transition:.25s;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:linear-gradient(135deg,rgba(0,170,255,.26),rgba(0,170,255,.08));
+    border:1px solid rgba(0,170,255,.42);
+    color:white;
+    box-shadow:0 0 25px rgba(0,170,255,.18);
+}
+
+.store-status{
+    position:absolute;
+    left:20px;
+    right:20px;
+    bottom:24px;
+    padding:20px;
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(13,27,44,.96),rgba(6,16,29,.96));
+    border:1px solid rgba(0,170,255,.18);
+}
+
+.status-dot{
+    width:14px;
+    height:14px;
+    background:#38ff14;
+    border-radius:50%;
+    display:inline-block;
+    box-shadow:0 0 18px #38ff14;
+    margin-right:10px;
+}
+
+.store-status h3{
+    font-size:16px;
+    margin-bottom:8px;
+}
+
+.store-status b{
+    color:#7CFF28;
+}
+
+.store-status p{
+    color:#a7b3c2;
+    font-size:14px;
+    line-height:1.6;
+    margin-top:10px;
+}
+
+.mini-wave{
+    margin-top:20px;
+    height:50px;
+    background:
+        linear-gradient(135deg,transparent 35%,rgba(124,255,40,.55) 35%,transparent 45%),
+        linear-gradient(45deg,transparent 35%,rgba(124,255,40,.25) 35%,transparent 45%);
+    border-radius:14px;
+    opacity:.9;
+}
+
+/* MAIN */
+.main{
+    padding:18px 32px 35px;
+}
+
+.topbar{
+    height:58px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+}
+
+.search-box{
+    width:400px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 18px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:14px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:white;
+    font-weight:700;
+}
+
+.shortcut{
+    padding:6px 10px;
+    border-radius:8px;
+    background:#07111d;
+    border:1px solid rgba(255,255,255,.1);
+    color:#b8c4d4;
+    font-size:12px;
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.icon-btn{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    text-decoration:none;
+    position:relative;
+}
+
+.badge-notify{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    width:19px;
+    height:19px;
+    border-radius:50%;
+    background:#ff304f;
+    color:white;
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile img{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.online-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#43ff1f;
+    display:inline-block;
+    margin-right:5px;
+}
+
+.profile b{
+    display:block;
+}
+
+.profile small{
+    color:#9ca8b8;
+}
+
+/* HEADER */
+.welcome{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:20px;
+}
+
+.welcome h1{
+    font-size:28px;
+    font-weight:900;
+}
+
+.welcome p{
+    color:#9ca8b8;
+    margin-top:8px;
+}
+
+.date-filter{
+    height:46px;
+    padding:0 18px;
+    border-radius:12px;
+    background:#07111d;
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+}
+
+/* STAT CARDS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    height:175px;
+    padding:22px;
+    border-radius:16px;
+    background:linear-gradient(180deg,rgba(8,18,32,.96),rgba(3,10,19,.96));
+    border:1px solid rgba(255,255,255,.08);
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-6px);
+}
+
+.stat-card.green{
+    border-color:rgba(124,255,40,.45);
+    box-shadow:0 0 35px rgba(124,255,40,.12);
+}
+
+.stat-card.purple{
+    border-color:rgba(168,85,247,.45);
+}
+
+.stat-card.blue{
+    border-color:rgba(0,170,255,.45);
+}
+
+.stat-card.orange{
+    border-color:rgba(245,158,11,.45);
+}
+
+.stat-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.stat-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.green .stat-icon{background:rgba(124,255,40,.18); color:#7CFF28;}
+.purple .stat-icon{background:rgba(168,85,247,.18); color:#a855f7;}
+.blue .stat-icon{background:rgba(0,170,255,.18); color:#00aaff;}
+.orange .stat-icon{background:rgba(245,158,11,.18); color:#f59e0b;}
+
+.stat-title{
+    margin-top:12px;
+    color:white;
+    font-weight:900;
+}
+
+.stat-value{
+    margin-top:18px;
+    font-size:34px;
+    font-weight:900;
+}
+
+.green .stat-value{color:#7CFF28;}
+.purple .stat-value{color:#c084fc;}
+.blue .stat-value{color:#00aaff;}
+.orange .stat-value{color:#fbbf24;}
+
+.stat-change{
+    margin-top:12px;
+    font-size:14px;
+    font-weight:800;
+}
+
+.green .stat-change{color:#7CFF28;}
+.purple .stat-change{color:#c084fc;}
+.blue .stat-change{color:#00aaff;}
+.orange .stat-change{color:#fbbf24;}
+
+.spark{
+    position:absolute;
+    right:20px;
+    bottom:18px;
+    width:115px;
+    height:42px;
+    opacity:.9;
+}
+
+.spark svg{
+    width:100%;
+    height:100%;
+}
+
+/* PANELS */
+.grid-main{
+    display:grid;
+    grid-template-columns:1.6fr 1fr;
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.panel{
+    background:linear-gradient(180deg,rgba(7,17,30,.96),rgba(3,10,19,.96));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 16px 50px rgba(0,0,0,.28);
+}
+
+.panel-head{
+    padding:20px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.panel-title{
+    font-size:19px;
+    font-weight:900;
+}
+
+.filter-form{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.field label{
+    font-size:12px;
+    color:#a8b3c2;
+}
+
+.field input{
+    height:40px;
+    background:#07111d;
+    color:white;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:9px;
+    padding:0 12px;
+}
+
+.btn{
+    height:40px;
+    padding:0 18px;
+    border-radius:9px;
+    border:none;
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.btn-blue{
+    background:linear-gradient(135deg,#008cff,#0057b8);
+}
+
+.btn-green{
+    background:linear-gradient(135deg,#42ff1f,#138a00);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    padding:14px 20px;
+    color:#9ca8b8;
+    text-align:left;
+    font-size:12px;
+}
+
+td{
+    padding:13px 20px;
+    color:#d8e3ef;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+tr:hover{
+    background:rgba(0,170,255,.04);
+}
+
+.price{
+    color:#7CFF28;
+    font-weight:900;
+}
+
+.status{
+    padding:7px 11px;
+    border-radius:8px;
+    background:rgba(124,255,40,.14);
+    color:#7CFF28;
+    font-size:12px;
+    font-weight:900;
+}
+
+/* PERFORMANCE */
+.performance{
+    padding:24px;
+}
+
+.performance-body{
+    display:grid;
+    grid-template-columns:190px 1fr;
+    gap:26px;
+    align-items:center;
+}
+
+.ring{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    background:
+        conic-gradient(#00aaff 0 52%, #7CFF28 52% 68%, #f59e0b 68% 82%, #a855f7 82% 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    box-shadow:0 0 45px rgba(0,170,255,.25);
+    animation:spinGlow 4s linear infinite;
+}
+
+.ring::after{
+    content:"";
+    width:105px;
+    height:105px;
+    border-radius:50%;
+    background:#06111f;
+    position:absolute;
+}
+
+.ring-content{
+    z-index:2;
+    text-align:center;
+}
+
+.ring-content strong{
+    display:block;
+    font-size:34px;
+}
+
+.ring-content span{
+    font-size:13px;
+}
+
+.performance-list{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.performance-item{
+    display:grid;
+    grid-template-columns:42px 1fr;
+    gap:14px;
+    align-items:center;
+}
+
+.perf-icon{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.perf-blue{background:rgba(0,170,255,.14); color:#00aaff;}
+.perf-green{background:rgba(124,255,40,.14); color:#7CFF28;}
+.perf-purple{background:rgba(168,85,247,.14); color:#a855f7;}
+.perf-orange{background:rgba(245,158,11,.14); color:#f59e0b;}
+
+.perf-top{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.bar{
+    height:7px;
+    border-radius:999px;
+    background:#172334;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    border-radius:999px;
+}
+
+.fill-blue{background:#00aaff; width:52%;}
+.fill-green{background:#42ff1f; width:80%;}
+.fill-purple{background:#a855f7; width:61%;}
+.fill-orange{background:#f59e0b; width:78%;}
+
+/* LOWER */
+.grid-bottom{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:18px;
+}
+
+.chart-panel{
+    padding:22px;
+}
+
+.chart-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.year-select{
+    height:34px;
+    padding:0 12px;
+    border-radius:8px;
+    background:#07111d;
+    color:white;
+    border:1px solid rgba(255,255,255,.12);
+}
+
+.best-list{
+    display:flex;
+    flex-direction:column;
+    gap:13px;
+}
+
+.best-item{
+    display:grid;
+    grid-template-columns:28px 42px 1fr auto;
+    align-items:center;
+    gap:12px;
+    padding-bottom:13px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.best-item img{
+    width:42px;
+    height:42px;
+    border-radius:7px;
+    object-fit:cover;
+}
+
+.best-title{
+    font-weight:800;
+}
+
+.best-meta{
+    color:#9ca8b8;
+    font-size:12px;
+}
+
+.best-revenue{
+    color:#7CFF28;
+    font-weight:900;
+}
+
+.footer{
+    margin-top:24px;
+    padding-top:24px;
+    border-top:1px solid rgba(255,255,255,.06);
+    display:flex;
+    justify-content:space-between;
+    color:#8794a6;
+    font-size:14px;
+}
+
+/* ANIMATIONS */
+@keyframes spinGlow{
+    0%{filter:hue-rotate(0deg);}
+    100%{filter:hue-rotate(25deg);}
+}
+
+.fade-up{
+    animation:fadeUp .7s ease both;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(24px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:1200px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid-main,
+    .grid-bottom{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:900px){
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        position:relative;
+        height:auto;
+    }
+
+    .store-status{
+        position:relative;
+        left:auto;
+        right:auto;
+        bottom:auto;
+        margin-top:25px;
+    }
+
+    .topbar,
+    .welcome{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+        height:auto;
+    }
+
+    .search-box{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    .main{
+        padding:18px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .performance-body{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <div class="logo-row">
+            <a href="/" class="logo">SELL<span>GAME</span></a>
+            <button class="collapse-btn">≪</button>
+        </div>
+
+        <div class="menu-label">ADMIN MENU</div>
+
+        <nav class="menu">
+            <a href="/">🏪 Game Store</a>
+            <a href="/admin-dashboard/" class="active">🎮 Dashboard</a>
+            <!-- <a href="/add/">➕ Add Game</a>
+            <a href="/history/">🧾 Orders</a>
+            <a href="/wishlist/">♡ Wishlist</a> -->
+            <a href="/admin-users/">👥 Users & Spending</a>
+            <a href="/admin/">⚙ Admin Control Panel</a>
+            <!-- <a href="/admin/">⚙ Settings</a> -->
+            <a href="/logout/" onclick="return confirm('Logout now?')">↪ Logout</a>
+        </nav>
+
+        <!-- <div class="store-status">
+            <h3><span class="status-dot"></span>Store Status</h3>
+            <b>Online</b>
+            <p>Everything running smoothly. Good job!</p>
+            <div class="mini-wave"></div>
+        </div> -->
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="search-box">
+                🔍
+                <input type="text" placeholder="Search anything...">
+                <span class="shortcut">Ctrl + K</span>
+            </div>
+
+            <div class="top-actions">
+                <a href="#" class="icon-btn">🔔<span class="badge-notify">5</span></a>
+                <a href="#" class="icon-btn">🌙</a>
+
+                <div class="profile">
+                    <img src="https://i.pravatar.cc/100?img=12">
+                    <div>
+                        <b>{{ request.user.username }}</b>
+                        <small><span class="online-dot"></span>Administrator</small>
+                    </div>
+                    <span>⌄</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="welcome">
+            <div>
+                <h1>Welcome back, {{ request.user.username }} 👋</h1>
+                <p>Here's what's happening with your store today.</p>
+            </div>
+
+            <div class="date-filter">
+                📅 May 1, 2026 - May 31, 2026 ⌄
+            </div>
+        </div>
+
+        <section class="stats">
+
+            <div class="stat-card green fade-up">
+                <div class="stat-top">
+                    <div class="stat-icon">💵</div>
+                    <div>•••</div>
+                </div>
+                <div class="stat-title">Total Revenue</div>
+                <div class="stat-value">${{ total_sales }}</div>
+                <div class="stat-change">↑ Database value</div>
+                <div class="spark">
+                    <svg viewBox="0 0 100 40">
+                        <polyline points="0,35 15,28 25,30 38,15 50,25 62,8 75,16 90,5 100,0"
+                        fill="none" stroke="#7CFF28" stroke-width="3"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="stat-card purple fade-up">
+                <div class="stat-top">
+                    <div class="stat-icon">🎮</div>
+                    <div>•••</div>
+                </div>
+                <div class="stat-title">Total Games</div>
+                <div class="stat-value">{{ total_games }}</div>
+                <div class="stat-change">↑ Active catalog</div>
+                <div class="spark">
+                    <svg viewBox="0 0 100 40">
+                        <polyline points="0,30 15,25 25,28 40,15 52,34 65,18 78,24 90,12 100,8"
+                        fill="none" stroke="#a855f7" stroke-width="3"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="stat-card blue fade-up">
+                <div class="stat-top">
+                    <div class="stat-icon">🛒</div>
+                    <div>•••</div>
+                </div>
+                <div class="stat-title">Total Orders</div>
+                <div class="stat-value">{{ total_orders }}</div>
+                <div class="stat-change">↑ Completed purchases</div>
+                <div class="spark">
+                    <svg viewBox="0 0 100 40">
+                        <polyline points="0,35 12,15 25,35 36,18 48,30 60,16 72,22 85,10 100,8"
+                        fill="none" stroke="#00aaff" stroke-width="3"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="stat-card orange fade-up">
+                <div class="stat-top">
+                    <div class="stat-icon">👤</div>
+                    <div>•••</div>
+                </div>
+                <div class="stat-title">Total Users</div>
+                <div class="stat-value">{{ total_users|default:"1" }}</div>
+                <div class="stat-change">↑ Registered users</div>
+                <div class="spark">
+                    <svg viewBox="0 0 100 40">
+                        <polyline points="0,35 15,22 28,30 42,12 55,18 68,8 80,16 92,10 100,0"
+                        fill="none" stroke="#f59e0b" stroke-width="3"/>
+                    </svg>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="grid-main">
+
+            <div class="panel fade-up">
+                <div class="panel-head">
+                    <div class="panel-title">🛒 Recent Purchases</div>
+
+                    <form method="GET" class="filter-form">
+                        <div class="field">
+                            <label>Start Date</label>
+                            <input type="date" name="start_date" value="{{ request.GET.start_date }}">
+                        </div>
+
+                        <div class="field">
+                            <label>End Date</label>
+                            <input type="date" name="end_date" value="{{ request.GET.end_date }}">
+                        </div>
+
+                        <div class="field">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-blue" type="submit">Filter</button>
+                        </div>
+
+                        <div class="field">
+                            <label>&nbsp;</label>
+                            <a href="/export-purchases/" class="btn btn-green">⬇ Export Excel</a>
+                        </div>
+                    </form>
+                </div>
+
+                <table>
+                    <tr>
+                        <th>USER</th>
+                        <th>GAME</th>
+                        <th>PRICE</th>
+                        <th>STATUS</th>
+                        <th>DATE</th>
+                    </tr>
+
+                    {% for p in purchases|slice:":5" %}
+                    <tr>
+                        <td>{{ p.user.username }}</td>
+                        <td>{{ p.game.title }}</td>
+                        <td class="price">${{ p.price }}</td>
+                        <td><span class="status">Paid</span></td>
+                        <td>{{ p.purchased_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No purchases yet.</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="panel performance fade-up">
+                <div class="panel-title" style="margin-bottom:25px;">📊 Store Performance</div>
+
+                <div class="performance-body">
+                    <div class="ring">
+                        <div class="ring-content">
+                            <strong>75%</strong>
+                            <span>Overall</span>
+                        </div>
+                    </div>
+
+                    <div class="performance-list">
+                        <div class="performance-item">
+                            <div class="perf-icon perf-blue">🎯</div>
+                            <div>
+                                <div class="perf-top"><span>Sales Target</span><span>${{ total_sales }} / $5,000</span></div>
+                                <div class="bar"><div class="fill fill-blue"></div></div>
+                            </div>
+                        </div>
+
+                        <div class="performance-item">
+                            <div class="perf-icon perf-green">📈</div>
+                            <div>
+                                <div class="perf-top"><span>Game Uploads</span><span>{{ total_games }} / 20</span></div>
+                                <div class="bar"><div class="fill fill-green"></div></div>
+                            </div>
+                        </div>
+
+                        <div class="performance-item">
+                            <div class="perf-icon perf-purple">🧾</div>
+                            <div>
+                                <div class="perf-top"><span>Orders Growth</span><span>{{ total_orders }} / 150</span></div>
+                                <div class="bar"><div class="fill fill-purple"></div></div>
+                            </div>
+                        </div>
+
+                        <div class="performance-item">
+                            <div class="perf-icon perf-orange">👥</div>
+                            <div>
+                                <div class="perf-top"><span>User Growth</span><span>{{ total_users|default:"1" }} / 200</span></div>
+                                <div class="bar"><div class="fill fill-orange"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="grid-bottom">
+
+            <div class="panel chart-panel fade-up">
+                <div class="chart-head">
+                    <div class="panel-title">📊 Monthly Revenue Chart</div>
+                    <select class="year-select"><option>2026</option></select>
+                </div>
+                <canvas id="monthlyRevenueChart" height="210"></canvas>
+            </div>
+
+            <div class="panel chart-panel fade-up">
+                <div class="chart-head">
+                    <div class="panel-title">📈 Revenue Analytics Graph</div>
+                    <select class="year-select"><option>2026</option></select>
+                </div>
+                <canvas id="revenueAnalyticsChart" height="210"></canvas>
+            </div>
+
+            <div class="panel chart-panel fade-up">
+                <div class="chart-head">
+                    <div class="panel-title">Best Selling Games</div>
+                    <a href="/history/" style="color:#00aaff;text-decoration:none;font-weight:900;">View All</a>
+                </div>
+
+                <div class="best-list">
+                    {% for game in best_selling_games %}
+                    <div class="best-item">
+                        <b>{{ forloop.counter }}</b>
+                        <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg">
+                        <div>
+                            <div class="best-title">{{ game.game__title }}</div>
+                            <div class="best-meta">{{ game.total_sold }} Sales</div>
+                        </div>
+                        <div class="best-revenue">${{ game.revenue }}</div>
+                    </div>
+                    {% empty %}
+                    <p style="color:#8b9bb0;">No selling data yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </section>
+
+        <div class="footer">
+            <span>© 2026 SellGame. All rights reserved.</span>
+            <span>Made with ❤️ by Admin</span>
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+const labels = JSON.parse('{{ chart_labels|default:"[]"|escapejs }}');
+const revenueData = JSON.parse('{{ chart_data|default:"[]"|escapejs }}');
+
+Chart.defaults.color = "#ffffff";
+Chart.defaults.font.family = "Inter";
+
+function gradient(ctx, c1, c2){
+    const g = ctx.createLinearGradient(0,0,0,260);
+    g.addColorStop(0,c1);
+    g.addColorStop(1,c2);
+    return g;
+}
+
+const barCanvas = document.getElementById("monthlyRevenueChart");
+const lineCanvas = document.getElementById("revenueAnalyticsChart");
+
+if(barCanvas){
+    const ctx = barCanvas.getContext("2d");
+
+    new Chart(ctx,{
+        type:"bar",
+        data:{
+            labels:labels,
+            datasets:[{
+                label:"Revenue",
+                data:revenueData,
+                backgroundColor:gradient(ctx,"rgba(0,170,255,.9)","rgba(0,170,255,.12)"),
+                borderColor:"#00aaff",
+                borderWidth:2,
+                borderRadius:8
+            }]
+        },
+        options:{
+            animation:{duration:1800,easing:"easeOutBounce"},
+            plugins:{
+                legend:{display:false},
+                tooltip:{
+                    backgroundColor:"#06111f",
+                    borderColor:"#00aaff",
+                    borderWidth:1,
+                    titleColor:"#fff",
+                    bodyColor:"#fff",
+                    padding:12,
+                    cornerRadius:10
+                }
+            },
+            scales:{
+                x:{grid:{display:false},ticks:{color:"#fff"}},
+                y:{beginAtZero:true,grid:{color:"rgba(255,255,255,.06)"},ticks:{color:"#fff"}}
+            }
+        }
+    });
+}
+
+if(lineCanvas){
+    const ctx = lineCanvas.getContext("2d");
+
+    new Chart(ctx,{
+        type:"line",
+        data:{
+            labels:labels,
+            datasets:[{
+                label:"Revenue",
+                data:revenueData,
+                borderColor:"#7CFF28",
+                backgroundColor:gradient(ctx,"rgba(124,255,40,.45)","rgba(124,255,40,.04)"),
+                borderWidth:3,
+                fill:true,
+                tension:.45,
+                pointRadius:5,
+                pointHoverRadius:8,
+                pointBackgroundColor:"#06111f",
+                pointBorderColor:"#7CFF28",
+                pointBorderWidth:3
+            }]
+        },
+        options:{
+            animation:{duration:2000,easing:"easeInOutQuart"},
+            plugins:{
+                legend:{display:false},
+                tooltip:{
+                    backgroundColor:"#06111f",
+                    borderColor:"#7CFF28",
+                    borderWidth:1,
+                    titleColor:"#fff",
+                    bodyColor:"#fff",
+                    padding:12,
+                    cornerRadius:10
+                }
+            },
+            scales:{
+                x:{grid:{display:false},ticks:{color:"#fff"}},
+                y:{beginAtZero:true,grid:{color:"rgba(255,255,255,.06)"},ticks:{color:"#fff"}}
+            }
+        }
+    });
+}
+</script>
+
+</body>
+</html>

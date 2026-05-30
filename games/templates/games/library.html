@@ -1,0 +1,1105 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library - SellOnlineGame</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+:root{
+    --bg:#0b141d;
+    --bg2:#101822;
+    --panel:#1b2838;
+    --panel2:#16202d;
+    --blue:#66c0f4;
+    --blue2:#2a475e;
+    --green:#8bc53f;
+    --text:#c7d5e0;
+    --muted:#8f98a0;
+    --white:#ffffff;
+    --red:#c0392b;
+}
+
+body{
+    background:
+    radial-gradient(circle at top left,rgba(102,192,244,.18),transparent 35%),
+    linear-gradient(135deg,#0b141d,#101822 55%,#05080d);
+    color:var(--text);
+    min-height:100vh;
+}
+
+.app{
+    display:grid;
+    grid-template-columns:250px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:linear-gradient(180deg,#0b141d,#101822);
+    border-right:1px solid rgba(102,192,244,.18);
+    padding:32px 14px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.epic-logo{
+    font-size:22px;
+    font-weight:900;
+    color:#66c0f4;
+    margin-bottom:42px;
+}
+.epic-logo span{
+    color: white;
+}
+
+.side-menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.side-link{
+    height:58px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0 22px;
+    color:var(--text);
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.side-link:hover,
+.side-link.active{
+    background:linear-gradient(135deg,#1b2838,#2a475e);
+    color:white;
+    box-shadow:0 12px 30px rgba(102,192,244,.18);
+}
+
+.download-icon{
+    position:absolute;
+    left:28px;
+    bottom:28px;
+    width:46px;
+    height:46px;
+    border:1px solid #2a475e;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--blue);
+}
+
+/* MAIN */
+.main{
+    padding:36px 42px 70px;
+}
+
+/* TOPBAR */
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+
+.search{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.back{
+    color:var(--muted);
+    font-size:28px;
+}
+
+.search-box{
+    width:360px;
+    height:50px;
+    border-radius:999px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 18px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:white;
+    font-weight:700;
+}
+
+.icons{
+    display:flex;
+    align-items:center;
+    gap:24px;
+    color:var(--blue);
+    font-size:23px;
+}
+
+.user-circle{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color:white;
+}
+
+/* HEADER */
+.library-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    background:
+    linear-gradient(90deg,rgba(11,20,29,.92),rgba(27,40,56,.72)),
+    url("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1551360/library_hero.jpg")
+    center/cover no-repeat;
+    border:1px solid rgba(102,192,244,.25);
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:40px;
+    box-shadow:0 25px 70px rgba(0,0,0,.35);
+}
+
+.library-header h1{
+    font-size:38px;
+    font-weight:900;
+    margin-bottom:8px;
+    color:white;
+}
+
+.library-header p{
+    color:var(--text);
+    font-weight:600;
+}
+
+.store-btn{
+    height:48px;
+    padding:0 24px;
+    border-radius:999px;
+    background:linear-gradient(to bottom,#75b022,#588a1b);
+    color:white;
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+    font-weight:900;
+    transition:.25s;
+    box-shadow:0 0 25px rgba(139,197,63,.25);
+}
+
+.store-btn:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(to bottom,#8bc53f,#5d9122);
+}
+
+/* CONTENT */
+.content-layout{
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:34px;
+}
+
+.tabs{
+    display:flex;
+    align-items:center;
+    gap:36px;
+    margin-bottom:34px;
+}
+
+.tab{
+    color:var(--muted);
+    font-size:18px;
+    font-weight:800;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.tab.active{
+    color:white;
+    position:relative;
+}
+
+.tab.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-10px;
+    width:100%;
+    height:2px;
+    background:#66c0f4;
+}
+
+.plus{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:2px solid var(--blue);
+    color:var(--blue);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+.sort-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:28px;
+}
+
+.sort-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--text);
+    font-weight:800;
+}
+
+.sort-left select{
+    height:40px;
+    background:#1b2838;
+    color:white;
+    border:1px solid #2a475e;
+    border-radius:10px;
+    padding:0 12px;
+}
+
+.view-icons{
+    display:flex;
+    gap:12px;
+    color:var(--blue);
+    font-size:22px;
+}
+
+/* RECENT */
+.recent-title{
+    font-size:28px;
+    margin-bottom:20px;
+    color:white;
+}
+
+.recent-games{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:40px;
+}
+
+.recent-card{
+    height:200px;
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid rgba(102,192,244,.18);
+    box-shadow:0 18px 45px rgba(0,0,0,.35);
+}
+
+.recent-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.recent-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top,rgba(5,8,13,.92),transparent);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:22px;
+}
+
+.recent-overlay h3{
+    font-size:22px;
+    margin-bottom:8px;
+    color:white;
+}
+
+.recent-overlay a{
+    color:#66c0f4;
+    text-decoration:none;
+    font-weight:900;
+}
+
+/* GRID */
+.library-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,220px));
+    gap:34px;
+}
+
+.game-card{
+    width:220px;
+}
+
+.cover{
+    width:220px;
+    height:330px;
+    border-radius:12px;
+    overflow:hidden;
+    position:relative;
+    background:#1b2838;
+    border:1px solid rgba(102,192,244,.18);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    transition:.25s;
+}
+
+.cover:hover{
+    border-color:#66c0f4;
+    box-shadow:0 25px 60px rgba(102,192,244,.18);
+}
+
+.cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.35s;
+}
+
+.game-card:hover .cover img{
+    transform:scale(1.05);
+}
+
+.badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:linear-gradient(to bottom,#75b022,#588a1b);
+    color:white;
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:11px;
+    font-weight:900;
+}
+
+.hover-play{
+    position:absolute;
+    inset:0;
+    background:rgba(11,20,29,.72);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:20px;
+    font-weight:900;
+    opacity:0;
+    transition:.3s;
+    text-decoration:none;
+}
+
+.cover:hover .hover-play{
+    opacity:1;
+}
+
+.card-title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:16px;
+    color:white;
+}
+
+.game-title{
+    font-size:17px;
+    font-weight:900;
+    color:white;
+}
+
+.card-icons{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.fav-btn,
+.delete-btn{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:50%;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.fav-btn:hover,
+.fav-btn.active{
+    background:#66c0f4;
+    color:#111;
+}
+
+.delete-btn:hover{
+    background:#c0392b;
+    color:white;
+    border-color:#c0392b;
+}
+
+.launch{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    color:#66c0f4;
+    text-decoration:none;
+    font-weight:800;
+    font-size:14px;
+}
+
+.launch:hover{
+    color:white;
+}
+
+.install-bar{
+    margin-top:13px;
+    height:6px;
+    background:#0b141d;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.install-fill{
+    width:100%;
+    height:100%;
+    background:linear-gradient(90deg,#ff0000,#91ff00,#91ff00);
+}
+
+.install-text{
+    margin-top:8px;
+    color:#8f98a0;
+    font-size:13px;
+    font-weight:700;
+}
+
+.showing{
+    margin-top:34px;
+    color:#8f98a0;
+    font-weight:800;
+}
+
+/* FILTER */
+.filter-panel{
+    background:linear-gradient(180deg,#1b2838,#101822);
+    border:1px solid rgba(102,192,244,.22);
+    border-radius:18px;
+    height:max-content;
+    overflow:hidden;
+}
+
+.filter-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px;
+    border-bottom:1px solid rgba(102,192,244,.18);
+}
+
+.filter-head h3{
+    color:white;
+}
+
+.reset{
+    color:#66c0f4;
+    cursor:pointer;
+}
+
+.filter-search{
+    margin:20px;
+    height:46px;
+    background:#101822;
+    border:1px solid #2a475e;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 14px;
+}
+
+.filter-search input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:white;
+}
+
+.filter-item{
+    padding:20px;
+    border-top:1px solid rgba(102,192,244,.13);
+    display:flex;
+    justify-content:space-between;
+    color:#c7d5e0;
+    font-weight:900;
+}
+
+/* EMPTY */
+.empty{
+    padding:80px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:18px;
+    text-align:center;
+}
+
+.empty h2{
+    color:white;
+}
+
+.empty p{
+    color:#8f98a0;
+}
+
+.empty a{
+    color:#66c0f4;
+    font-weight:900;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+
+    .app{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        position:relative;
+        height:auto;
+    }
+
+    .content-layout{
+        grid-template-columns:1fr;
+    }
+
+    .filter-panel{
+        display:none;
+    }
+}
+
+@media(max-width:750px){
+
+    .main{
+        padding:24px 18px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        gap:18px;
+        align-items:flex-start;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .recent-games{
+        grid-template-columns:1fr;
+    }
+
+    .library-grid{
+        grid-template-columns:1fr;
+    }
+
+    .game-card,
+    .cover{
+        width:100%;
+    }
+
+    .library-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="epic-logo">
+            SELL<span>GAME</span>ONLINE
+        </div>
+
+        <div class="side-menu">
+            <a href="/" class="side-link">🛍 Store</a>
+            <a href="/library/" class="side-link active">▥ Library</a>
+            <a href="/wishlist/" class="side-link">♡ Wishlist</a>
+            <a href="/cart/" class="side-link">🛒 Cart</a>
+            <!-- <a href="/cart/" class="side-link">🛒 Cart</a> -->
+        </div>
+
+        <!-- <div class="download-icon">
+            ↓
+        </div> -->
+
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="search">
+
+                <!-- <span class="back">‹</span> -->
+
+                <!-- <div class="search-box">
+                    🔍
+                    <input type="text"
+                    id="searchInput"
+                    placeholder="Search library"
+                    onkeyup="filterLibrary()">
+                </div> -->
+
+            </div>
+
+            <!-- <div class="icons">
+                ♡ 🎁 🛒
+                <span class="user-circle">
+                    {{ purchased_games|length }}
+                </span>
+            </div> -->
+
+        </div>
+
+        <div class="library-header">
+
+            <div>
+                <h1>My Library</h1>
+                <p>
+                    Click & Play, favorite, and Delete your purchased games.
+                </p>
+            </div>
+
+            <a href="/" class="store-btn">
+                Browse Store
+            </a>
+
+        </div>
+
+        <div class="content-layout">
+
+            <section>
+
+                <div class="tabs">
+                    <a class="tab active" onclick="showAll()">All Games</a>
+                    <a class="tab" onclick="showFavorites()">Recently</a>
+                    <!-- <div class="plus">+</div> -->
+                </div>
+
+                <div class="sort-row">
+
+                    <div class="sort-left">
+
+                        <span>Sort by:</span>
+
+                        <select id="sortSelect" onchange="sortGames()">
+                            <option value="recent">Recently Purchased</option>
+                            <option value="az">Title A-Z</option>
+                            <option value="za">Title Z-A</option>
+                        </select>
+
+                    </div>
+
+                    <!-- <div class="view-icons">
+                        ▦ ☷
+                    </div> -->
+
+                </div>
+
+                {% if purchased_games %}
+
+                <h2 class="recent-title">
+                    Recently Played
+                </h2>
+
+                <div class="recent-games">
+
+                    {% for purchase in purchased_games|slice:":3" %}
+
+                    <div class="recent-card">
+
+                        {% if purchase.game.image %}
+                            <img src="{{ purchase.game.image.url }}">
+                        {% else %}
+                            <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/271590/library_hero.jpg">
+                        {% endif %}
+
+                        <div class="recent-overlay">
+
+                            <h3>{{ purchase.game.title }}</h3>
+
+                            <a href="/play/{{ purchase.game.id }}/">
+                                ▶ Continue
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="library-grid" id="libraryGrid">
+
+                    {% for purchase in purchased_games %}
+
+                    <div class="game-card searchable-card"
+                    data-title="{{ purchase.game.title|lower }}"
+                    data-favorite="false">
+
+                        <div class="cover">
+
+                            {% if purchase.game.image %}
+                                <img src="{{ purchase.game.image.url }}">
+                            {% else %}
+                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900.jpg">
+                            {% endif %}
+
+                            <div class="badge">
+                                INSTALLED
+                            </div>
+
+                            <a href="/play/{{ purchase.game.id }}/"
+                            class="hover-play">
+                                ▶ PLAY NOW
+                            </a>
+
+                        </div>
+
+                        <div class="card-title-row">
+
+                            <div class="game-title">
+                                {{ purchase.game.title }}
+                            </div>
+
+                            <div class="card-icons">
+
+                                <button class="fav-btn"
+                                onclick="toggleFavorite(this)">
+                                    ♡
+                                </button>
+
+                                <form method="POST"
+                                action="/library/delete/{{ purchase.game.id }}/">
+
+                                    {% csrf_token %}
+
+                                    <button type="submit"
+                                    class="delete-btn"
+                                    onclick="return confirm('Remove this game from library?')">
+                                        🗑
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                        <a href="/play/{{ purchase.game.id }}/"
+                        class="launch">
+                            ▶ Launch
+                        </a>
+
+                        <div class="install-bar">
+                            <div class="install-fill"></div>
+                        </div>
+
+                        <div class="install-text">
+                            Installed • Ready to Play
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="showing">
+                    Showing {{ purchased_games|length }} of {{ purchased_games|length }}
+                </div>
+
+                {% else %}
+
+                <div class="empty">
+
+                    <h2>Your library is empty</h2>
+
+                    <p>
+                        Buy a game from the store to see it here.
+                    </p>
+
+                    <br>
+
+                    <a href="/">
+                        Go to Store
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+            </section>
+
+            <aside class="filter-panel">
+
+                <div class="filter-head">
+                    <h3>Filters</h3>
+                    <span class="reset" onclick="showAll()">Reset</span>
+                </div>
+
+                <div class="filter-search">
+            
+                    <input type="text" id="searchInput" placeholder="Search Games..." onkeyup="filterLibrary()">
+                </div>
+
+                <div class="filter-item">
+                    <span>Installed Games</span>
+                    <span>{{ purchased_games|length }}</span>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+function filterLibrary(){
+
+    const searchInput = document.getElementById("searchInput");
+
+    if(!searchInput){
+        return;
+    }
+
+    const input = searchInput.value.toLowerCase();
+
+    const cards = document.querySelectorAll(".searchable-card");
+
+    cards.forEach(function(card){
+
+        const titleElement = card.querySelector(".game-title");
+
+        if(!titleElement){
+            return;
+        }
+
+        const title = titleElement.innerText.toLowerCase();
+
+        if(title.includes(input)){
+            card.style.display = "";
+        }else{
+            card.style.display = "none";
+        }
+
+    });
+}
+
+function toggleFavorite(btn){
+
+    const card = btn.closest(".searchable-card");
+
+    btn.classList.toggle("active");
+
+    if(btn.classList.contains("active")){
+        btn.innerHTML = "♥";
+        card.dataset.favorite = "true";
+    }else{
+        btn.innerHTML = "♡";
+        card.dataset.favorite = "false";
+    }
+}
+
+function showFavorites(){
+
+    document.querySelectorAll(".tab")
+    .forEach(t => t.classList.remove("active"));
+
+    document.querySelectorAll(".tab")[1]
+    .classList.add("active");
+
+    document.querySelectorAll(".searchable-card")
+    .forEach(card => {
+
+        card.style.display =
+        card.dataset.favorite === "true" ? "" : "none";
+
+    });
+}
+
+function showAll(){
+
+    document.querySelectorAll(".tab")
+    .forEach(t => t.classList.remove("active"));
+
+    document.querySelectorAll(".tab")[0]
+    .classList.add("active");
+
+    document.querySelectorAll(".searchable-card")
+    .forEach(card => {
+        card.style.display = "";
+    });
+
+    const searchInput = document.getElementById("searchInput");
+
+    if(searchInput){
+        searchInput.value = "";
+    }
+}
+
+function sortGames(){
+
+    const grid = document.getElementById("libraryGrid");
+
+    if(!grid){
+        return;
+    }
+
+    const cards = Array.from(grid.querySelectorAll(".searchable-card"));
+
+    const value = document.getElementById("sortSelect").value;
+
+    cards.sort((a,b) => {
+
+        const titleA = a.dataset.title;
+        const titleB = b.dataset.title;
+
+        if(value === "az"){
+            return titleA.localeCompare(titleB);
+        }
+
+        if(value === "za"){
+            return titleB.localeCompare(titleA);
+        }
+
+        return 0;
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+}
+function toggleFavorite(btn){
+
+    const card =
+    btn.closest(".searchable-card");
+
+    btn.classList.toggle("active");
+
+    if(btn.classList.contains("active")){
+
+        btn.innerHTML = "♥";
+        card.dataset.favorite = "true";
+
+    }else{
+
+        btn.innerHTML = "♡";
+        card.dataset.favorite = "false";
+
+    }
+}
+
+function showFavorites(){
+
+    document.querySelectorAll(".tab")
+    .forEach(t => t.classList.remove("active"));
+
+    document.querySelectorAll(".tab")[1]
+    .classList.add("active");
+
+    document.querySelectorAll(".searchable-card")
+    .forEach(card => {
+
+        card.style.display =
+        card.dataset.favorite === "true"
+        ? ""
+        : "none";
+
+    });
+}
+
+function showAll(){
+
+    document.querySelectorAll(".tab")
+    .forEach(t => t.classList.remove("active"));
+
+    document.querySelectorAll(".tab")[0]
+    .classList.add("active");
+
+    document.querySelectorAll(".searchable-card")
+    .forEach(card => {
+
+        card.style.display = "";
+
+    });
+}
+
+function sortGames(){
+
+    const grid =
+    document.getElementById("libraryGrid");
+
+    const cards =
+    Array.from(grid.querySelectorAll(".searchable-card"));
+
+    const value =
+    document.getElementById("sortSelect").value;
+
+    cards.sort((a,b) => {
+
+        const titleA = a.dataset.title;
+        const titleB = b.dataset.title;
+
+        if(value === "az"){
+            return titleA.localeCompare(titleB);
+        }
+
+        if(value === "za"){
+            return titleB.localeCompare(titleA);
+        }
+
+        return 0;
+
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+}
+</script>
+
+</body>
+</html>
+

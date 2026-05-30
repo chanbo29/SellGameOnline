@@ -1,0 +1,597 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ABA Payment - SellGame Online</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#25415c,#101827 45%,#070b10);
+    color:white;
+    padding:35px;
+}
+
+.wrapper{
+    max-width:1200px;
+    margin:auto;
+}
+
+.top-nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.logo{
+    font-size:2rem;
+    font-weight:900;
+    color:#66c0f4;
+}
+
+.logo span{
+    color:white;
+}
+
+.status-pill{
+    padding:12px 18px;
+    border-radius:999px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+    font-weight:800;
+}
+
+.payment-shell{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    background:#111827;
+    border:1px solid #2a475e;
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:0 35px 90px rgba(0,0,0,.55);
+}
+
+.left-panel{
+    padding:45px;
+    background:linear-gradient(160deg,#172232,#0f1722);
+    border-right:1px solid #2a475e;
+}
+
+.step-label{
+    color:#66c0f4;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.title{
+    font-size:2.6rem;
+    font-weight:900;
+    margin-bottom:14px;
+}
+
+.subtitle{
+    color:#c7d5e0;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.game-preview{
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:24px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.game-preview img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    display:block;
+}
+
+.game-info{
+    padding:24px;
+}
+
+.game-info h2{
+    font-size:1.9rem;
+    margin-bottom:12px;
+}
+
+.game-desc{
+    color:#9ca3af;
+    line-height:1.8;
+    margin-bottom:20px;
+}
+
+.order-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#c7d5e0;
+}
+
+.amount{
+    color:#beee11;
+    font-size:2rem;
+    font-weight:900;
+}
+
+.notice{
+    background:rgba(102,192,244,.08);
+    border:1px solid rgba(102,192,244,.25);
+    color:#c7d5e0;
+    border-radius:18px;
+    padding:18px;
+    line-height:1.7;
+}
+
+.right-panel{
+    padding:45px;
+    background:#0f1722;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.aba-badge{
+    padding:13px 22px;
+    border-radius:999px;
+    background:linear-gradient(135deg,#00bcd4,#0077ff);
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+.countdown-box{
+    padding:14px 18px;
+    border-radius:16px;
+    background:rgba(102,192,244,.08);
+    border:1px solid rgba(102,192,244,.25);
+    color:#c7d5e0;
+    font-weight:800;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+#countdownTimer{
+    color:#66c0f4;
+    font-size:1.4rem;
+    margin-left:8px;
+}
+
+.qr-frame{
+    width:100%;
+    max-width:360px;
+    padding:18px;
+    background:white;
+    border-radius:28px;
+    margin-bottom:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+
+.qr-frame img{
+    width:100%;
+    border-radius:18px;
+    display:block;
+}
+
+.scan-text{
+    color:#8f98a0;
+    text-align:center;
+    line-height:1.7;
+    margin-bottom:24px;
+}
+.scan-btn{
+    width:100%;
+    max-width:360px;
+    border:none;
+    padding:16px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#66c0f4,#1d7bc1);
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    backdrop-filter:blur(8px);
+}
+
+.popup-box{
+    width:420px;
+    max-width:90%;
+    background:linear-gradient(180deg,#111827,#0f1722);
+    border:1px solid #2a475e;
+    border-radius:28px;
+    padding:34px;
+    text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+
+.popup-box h2{
+    font-size:2rem;
+    margin-bottom:14px;
+    color:white;
+    font-weight:900;
+}
+
+.popup-box p{
+    color:#c7d5e0;
+    line-height:1.8;
+    margin-bottom:26px;
+    font-size:1rem;
+}
+
+.popup-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.confirm-popup,
+.cancel-popup{
+    border:none;
+    padding:15px;
+    border-radius:16px;
+    font-weight:900;
+    font-size:1rem;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.confirm-popup{
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+}
+
+.confirm-popup:hover{
+    transform:translateY(-2px);
+}
+
+.cancel-popup{
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+}
+
+.cancel-popup:hover{
+    background:#223548;
+}
+/* REDEEM */
+.redeem-box{
+    width:100%;
+    max-width:390px;
+    background:linear-gradient(180deg,#1b2838,#121b27);
+    border:1px solid rgba(102,192,244,.35);
+    border-radius:22px;
+    padding:24px;
+    margin:20px auto;
+    text-align:center;
+    box-shadow:0 18px 45px rgba(0,0,0,.35);
+}
+
+.redeem-title{
+    color:#c7d5e0;
+    font-weight:900;
+    margin-bottom:14px;
+}
+
+.redeem-code{
+    color:#beee11;
+    font-size:2rem;
+    font-weight:900;
+    letter-spacing:3px;
+    margin-bottom:18px;
+}
+
+.copy-btn{
+    border:none;
+    padding:13px 24px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#66c0f4,#1b8bd6);
+    color:#07111d;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.redeem-input{
+    width:100%;
+    max-width:390px;
+    display:block;
+    margin:0 auto 16px;
+    padding:17px;
+    border-radius:16px;
+    border:1px solid rgba(102,192,244,.35);
+    background:#0b1420;
+    color:white;
+    text-align:center;
+    font-weight:900;
+    outline:none;
+}
+
+.confirm-btn{
+    width:100%;
+    max-width:390px;
+    display:block;
+    margin:auto;
+    border:none;
+    padding:17px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 14px 30px rgba(139,197,63,.25);
+}
+@media(max-width:900px){
+    body{
+        padding:20px;
+    }
+
+    .payment-shell{
+        grid-template-columns:1fr;
+    }
+
+    .left-panel{
+        border-right:none;
+        border-bottom:1px solid #2a475e;
+    }
+
+    .action-row{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="top-nav">
+        <div class="logo">SELL<span>GAME</span>ONLINE</div>
+        <div class="status-pill">🔒 Secure KHQR Payment</div>
+    </div>
+
+    <div class="payment-shell">
+
+        <div class="left-panel">
+
+            <div class="step-label">STEP 2 OF 2</div>
+
+            <div class="title">Complete Payment</div>
+
+            <div class="subtitle">
+                Scan this KHQR using ABA Mobile. After you finish payment in ABA,
+                return here and click “I Paid with ABA”.
+            </div>
+
+            <div class="game-preview">
+
+                {% if game.image %}
+                    <img src="{{ game.image.url }}">
+                {% else %}
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg">
+                {% endif %}
+
+                <div class="game-info">
+
+                    <h2>{{ game_title }}</h2>
+
+                    <div class="game-desc">
+                        {{ game.description }}
+                    </div>
+
+                    <div class="order-row">
+                        <span>Payment Method</span>
+                        <strong>ABA PAY KHQR</strong>
+                    </div>
+
+                    <div class="order-row">
+                        <span>Total Amount</span>
+
+                        <strong class="amount">
+                            {% if amount == 0 %}
+                                FREE
+                            {% else %}
+                                ${{ amount|floatformat:2 }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="notice">
+                ⚠️ This project cannot detect real ABA approval automatically without ABA/Bakong API.
+                Please click the confirmation button only after payment is complete.
+            </div>
+
+        </div>
+
+        <div class="right-panel">
+
+            <div class="aba-badge">ABA PAY</div>
+
+            <div class="countdown-box">
+                QR expires in:
+                <span id="countdownTimer">02:00</span>
+            </div>
+
+            <div class="qr-frame">
+                <img src="{% static 'images/photo_2026-05-23_01-54-56.jpg' %}" alt="ABA KHQR">
+            </div>
+            <div class="scan-text">
+    Open ABA Mobile → Scan KHQR → Complete payment.
+</div>
+
+<button type="button"
+        class="scan-btn"
+        onclick="openPaymentPopup()">
+    📱 I Scanned QR
+</button>
+<div id="redeemSection"
+     style="display:none; width:100%;">
+
+    <div class="redeem-box">
+
+        <div class="redeem-title">
+            Your Redeem Code
+        </div>
+
+        <div class="redeem-code" id="redeemCode">
+            {{ redeem_code }}
+        </div>
+
+        <button type="button"
+                class="copy-btn"
+                onclick="copyRedeemCode()">
+            Copy Code
+        </button>
+
+    </div>
+
+    <form method="POST" action="{% url 'complete_payment' %}">
+        {% csrf_token %}
+
+        <input type="hidden" name="game_id" value="{{ game.id }}">
+
+        <input type="text"
+               name="redeem_code"
+               class="redeem-input"
+               placeholder="Paste redeem code here"
+               required>
+
+        <button type="submit" class="confirm-btn">
+            I Paid with ABA
+        </button>
+    </form>
+
+</div>
+<div class="popup-overlay" id="paymentPopup">
+
+    <div class="popup-box">
+
+        <h2>Confirm Payment</h2>
+
+        <p>
+            Did you scan KHQR and complete payment with ABA?
+        </p>
+
+        <div class="popup-actions">
+
+            <button type="button"
+                    class="cancel-popup"
+                    onclick="closePaymentPopup()">
+                Cancel
+            </button>
+
+            <button type="button"
+                    class="confirm-popup"
+                    onclick="showRedeemCode()">
+                Confirm Payment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    let timeLeft = 120;
+    const timer = document.getElementById("countdownTimer");
+
+    const countdown = setInterval(function(){
+
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        timer.textContent =
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        if(timeLeft <= 0){
+            clearInterval(countdown);
+            timer.textContent = "EXPIRED";
+            timer.style.color = "#ff4d4d";
+
+            setTimeout(function(){
+                window.location.href = "/buy/{{ game.id }}/";
+            }, 1000);
+        }
+
+        timeLeft--;
+
+    }, 1000);
+
+});
+
+function openPaymentPopup(){
+    const popup = document.getElementById("paymentPopup");
+
+    if(popup){
+        popup.style.display = "flex";
+    }
+}
+
+function closePaymentPopup(){
+    const popup = document.getElementById("paymentPopup");
+
+    if(popup){
+        popup.style.display = "none";
+    }
+}
+
+function showRedeemCode(){
+    const popup = document.getElementById("paymentPopup");
+    const redeem = document.getElementById("redeemSection");
+
+    if(popup){
+        popup.style.display = "none";
+    }
+
+    if(redeem){
+        redeem.style.display = "block";
+    }
+}
+
+function copyRedeemCode(){
+    const codeBox = document.getElementById("redeemCode");
+
+    if(codeBox){
+        navigator.clipboard.writeText(codeBox.innerText.trim());
+        alert("Redeem code copied!");
+    }
+}
+</script>
+</body>
+</html>

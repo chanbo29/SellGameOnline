@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Game Ready - SellGame</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top left,#20354a,#101827 42%,#05080d);
+    color:white;
+}
+
+.wrapper{
+    max-width:1280px;
+    margin:auto;
+    padding:35px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+}
+
+.logo{
+    font-size:2.2rem;
+    font-weight:900;
+    color:#66c0f4;
+}
+
+.logo span{
+    color:white;
+}
+
+.status{
+    padding:13px 20px;
+    border-radius:999px;
+    background:rgba(139,197,63,.12);
+    border:1px solid rgba(139,197,63,.35);
+    color:#8bc53f;
+    font-weight:900;
+}
+
+.shell{
+    background:linear-gradient(180deg,#111827,#080d14);
+    border:1px solid #2a475e;
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:0 40px 100px rgba(0,0,0,.6);
+}
+
+.hero{
+    position:relative;
+    height:470px;
+    overflow:hidden;
+}
+
+.hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:saturate(1.1);
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(to right,rgba(5,8,13,.92),rgba(5,8,13,.45),rgba(5,8,13,.15)),
+    linear-gradient(to top,rgba(5,8,13,.98),transparent 65%);
+}
+
+.hero-content{
+    position:absolute;
+    z-index:2;
+    left:42px;
+    bottom:42px;
+    max-width:720px;
+}
+
+.badge{
+    display:inline-block;
+    padding:10px 16px;
+    border-radius:999px;
+    background:rgba(139,197,63,.14);
+    border:1px solid rgba(139,197,63,.35);
+    color:#8bc53f;
+    font-weight:900;
+    margin-bottom:18px;
+}
+
+.game-title{
+    font-size:4rem;
+    font-weight:900;
+    margin-bottom:14px;
+}
+
+.game-desc{
+    color:#c7d5e0;
+    line-height:1.8;
+    font-size:1rem;
+}
+
+.content{
+    padding:36px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.info-card{
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:22px;
+    padding:22px;
+}
+
+.info-label{
+    color:#8f98a0;
+    margin-bottom:8px;
+}
+
+.info-value{
+    color:#66c0f4;
+    font-size:1.35rem;
+    font-weight:900;
+}
+
+.action-row{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.download-btn,
+.library-btn,
+.store-btn{
+    padding:17px 26px;
+    border-radius:17px;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:900;
+    transition:.25s;
+}
+
+.download-btn{
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+    box-shadow:0 12px 30px rgba(139,197,63,.25);
+}
+
+.download-btn:hover{
+    transform:translateY(-3px);
+}
+
+.download-btn:disabled{
+    opacity:.7;
+    cursor:not-allowed;
+}
+
+.library-btn,
+.store-btn{
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+}
+
+.download-panel{
+    display:none;
+    margin-top:30px;
+    background:linear-gradient(180deg,#182433,#111927);
+    border:1px solid #2a475e;
+    border-radius:28px;
+    padding:28px;
+}
+
+.download-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.download-game-name{
+    font-size:1.4rem;
+    font-weight:900;
+}
+
+.download-subtitle{
+    color:#8f98a0;
+    margin-top:6px;
+}
+
+.download-percent{
+    font-size:2.2rem;
+    color:#66c0f4;
+    font-weight:900;
+}
+
+.progress-bar{
+    width:100%;
+    height:20px;
+    background:#0b1118;
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.progress-fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#ff0000,#3cff00);
+    border-radius:999px;
+    transition:.2s;
+}
+
+.download-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:22px;
+}
+
+.stat-card{
+    background:#0f1722;
+    border:1px solid #233547;
+    border-radius:18px;
+    padding:18px;
+}
+
+.stat-label{
+    color:#8f98a0;
+    font-size:.8rem;
+    margin-bottom:8px;
+}
+
+.stat-value{
+    font-weight:900;
+}
+
+.complete-box{
+    display:none;
+    margin-top:30px;
+    padding:36px;
+    border-radius:28px;
+    text-align:center;
+    background:linear-gradient(180deg,rgba(139,197,63,.14),rgba(139,197,63,.05));
+    border:1px solid rgba(139,197,63,.35);
+}
+
+.complete-icon{
+    width:75px;
+    height:75px;
+    margin:auto auto 18px;
+    border-radius:50%;
+    background:#8bc53f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2rem;
+    font-weight:900;
+}
+
+.complete-title{
+    font-size:2rem;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.complete-desc{
+    color:#c7d5e0;
+    line-height:1.8;
+    margin-bottom:24px;
+}
+
+.finish-btn{
+    display:inline-block;
+    padding:16px 28px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+    font-weight:900;
+    text-decoration:none;
+}
+
+@media(max-width:900px){
+    .wrapper{
+        padding:20px;
+    }
+
+    .hero{
+        height:360px;
+    }
+
+    .hero-content{
+        left:24px;
+        right:24px;
+    }
+
+    .game-title{
+        font-size:2.4rem;
+    }
+
+    .info-grid,
+    .download-stats{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="topbar">
+        <div class="logo">SELL<span>GAME</span></div>
+        <div class="status">✔ PURCHASE COMPLETE</div>
+    </div>
+
+    <div class="shell">
+
+        <div class="hero">
+
+            {% if game.image %}
+                <img src="{{ game.image.url }}">
+            {% else %}
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg">
+            {% endif %}
+
+            <div class="hero-content">
+                <div class="badge">READY TO INSTALL</div>
+                <div class="game-title">{{ game.title }}</div>
+                <div class="game-desc">{{ game.description }}</div>
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <!-- <div class="info-grid">
+
+                <div class="info-card">
+                    <div class="info-label">Status</div>
+                    <div class="info-value">Purchased</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Access</div>
+                    <div class="info-value">Instant Download</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">Platform</div>
+                    <div class="info-value">PC / Windows</div>
+                </div>
+
+            </div> -->
+
+            <div class="action-row">
+
+                <button type="button"
+                        class="download-btn"
+                        id="downloadBtn"
+                        onclick="startDownload()">
+                    ⬇ Download Game
+                </button>
+
+                <!-- <a href="/library/" class="library-btn">
+                    🎮 Library
+                </a>
+
+                <a href="/" class="store-btn">
+                    🏪 Store
+                </a> -->
+
+            </div>
+
+            <div class="download-panel" id="downloadPanel">
+
+                <div class="download-top">
+                    <div>
+                        <div class="download-game-name">
+                            {{ game.title }}
+                        </div>
+                        <div class="download-subtitle">
+                            Downloading game files...
+                        </div>
+                    </div>
+
+                    <div class="download-percent" id="percent">
+                        0%
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="download-stats">
+
+                    <div class="stat-card">
+                        <div class="stat-label">STATUS</div>
+                        <div class="stat-value" id="statusText">Waiting...</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">SPEED</div>
+                        <div class="stat-value" id="speedText">0 MB/s</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">REMAINING</div>
+                        <div class="stat-value" id="timeText">--:--</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="complete-box" id="completeBox">
+
+                <div class="complete-icon">
+                    ✔
+                </div>
+
+                <div class="complete-title">
+                    Download Complete
+                </div>
+
+                <div class="complete-desc">
+                    Your game has been installed successfully.
+                    Click Finish to open your library.
+                </div>
+
+                <a href="/library/" class="finish-btn">
+                    Finish
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function startDownload(){
+
+    const panel = document.getElementById("downloadPanel");
+    const completeBox = document.getElementById("completeBox");
+    const fill = document.getElementById("progressFill");
+    const percentText = document.getElementById("percent");
+    const statusText = document.getElementById("statusText");
+    const speedText = document.getElementById("speedText");
+    const timeText = document.getElementById("timeText");
+    const button = document.getElementById("downloadBtn");
+
+    panel.style.display = "block";
+    completeBox.style.display = "none";
+
+    button.disabled = true;
+    button.innerText = "Downloading...";
+
+    let percent = 0;
+
+    const download = setInterval(function(){
+
+        percent += 4;
+
+        if(percent > 100){
+            percent = 100;
+        }
+
+        fill.style.width = percent + "%";
+        percentText.innerText = percent + "%";
+
+        if(percent < 35){
+            statusText.innerText = "Connecting to server...";
+            speedText.innerText = "8.4 MB/s";
+            timeText.innerText = "10 min";
+        }else if(percent < 75){
+            statusText.innerText = "Downloading files...";
+            speedText.innerText = "24.7 MB/s";
+            timeText.innerText = "4 min";
+        }else if(percent < 100){
+            statusText.innerText = "Installing game...";
+            speedText.innerText = "12.1 MB/s";
+            timeText.innerText = "1 min";
+        }else{
+            statusText.innerText = "Completed ✔";
+            speedText.innerText = "Done";
+            timeText.innerText = "0 min";
+        }
+
+        if(percent >= 100){
+            clearInterval(download);
+            completeBox.style.display = "block";
+            button.innerText = "Installed ✔";
+        }
+
+    }, 200);
+}
+</script>
+
+</body>
+</html>

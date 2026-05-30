@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SellGame Register</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#06121d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    color:white;
+}
+
+.auth-wrapper{
+    width:100%;
+    max-width:1150px;
+    min-height:650px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    background:#07101a;
+    border:1px solid rgba(102,192,244,.25);
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+
+/* LEFT */
+.hero{
+    padding:60px 55px;
+    background:
+    linear-gradient(90deg,rgba(6,18,29,.82),rgba(6,18,29,.94)),
+    url("https://images.pexels.com/photos/1038916/pexels-photo-1038916.jpeg?cs=srgb&dl=pexels-fox-58267-1038916.jpg&fm=jpg");
+    background-size:cover;
+    background-position:center;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:900;
+    margin-bottom:90px;
+}
+
+.logo span{
+    color:#58c4ff;
+}
+
+.badge{
+    display:inline-block;
+    padding:10px 18px;
+    border-radius:30px;
+    background:rgba(102,192,244,.12);
+    border:1px solid rgba(102,192,244,.45);
+    color:#8bd7ff;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:64px;
+    line-height:1;
+    font-weight:900;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    color:#58c4ff;
+}
+
+.hero p{
+    max-width:520px;
+    color:#b9c8d8;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.feature-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:80px;
+}
+
+.feature{
+    padding:22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+}
+
+.feature h3{
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.feature p{
+    font-size:14px;
+    color:#9fb0c2;
+}
+
+/* RIGHT */
+.form-side{
+    padding:55px;
+    background:#050b12;
+}
+
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:#161b24;
+    padding:7px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.1);
+    margin-bottom:30px;
+}
+
+.tabs a{
+    text-align:center;
+    text-decoration:none;
+    color:#9fb0c2;
+    font-weight:800;
+    padding:14px;
+    border-radius:13px;
+}
+
+.tabs .active{
+    color:white;
+    background:linear-gradient(135deg,#66c0f4,#2b87c8);
+}
+
+.form-side h2{
+    font-size:36px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.form-side .text{
+    color:#9fb0c2;
+    margin-bottom:30px;
+    font-size:16px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    font-weight:800;
+    color:#c8d4e0;
+    margin-bottom:9px;
+    font-size:14px;
+}
+
+.input-box{
+    position:relative;
+}
+
+.input-box input{
+    width:100%;
+    height:55px;
+    border:none;
+    outline:none;
+    border-radius:15px;
+    background:#e8f0ff;
+    color:#111;
+    padding:0 52px;
+    font-weight:600;
+}
+
+.icon{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.eye{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#555;
+}
+
+.register-btn{
+    width:100%;
+    height:58px;
+    border:none;
+    border-radius:17px;
+    margin-top:15px;
+    background:linear-gradient(135deg,#8bd13b,#5fa31f);
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.register-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+.bottom{
+    margin-top:22px;
+    text-align:center;
+    color:#99a8b8;
+    font-weight:700;
+}
+
+.bottom a{
+    color:#58c4ff;
+    text-decoration:none;
+    font-weight:900;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .auth-wrapper{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:40px 30px;
+    }
+
+    .logo{
+        margin-bottom:50px;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .feature-box{
+        grid-template-columns:1fr;
+        margin-top:40px;
+    }
+
+    .form-side{
+        padding:40px 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+    <div class="hero">
+        <div class="logo">
+            <span>SELL</span>ONLINE<span>GAME</span>
+        </div>
+        <div class="badge">🔥 Modern Game Store</div>
+
+        <h1>
+            Join now.<br>
+            <span>Play today.</span>
+        </h1>
+
+        <p>
+            Create your account to buy games, save your wishlist,
+            access your library, and download owned games anytime.
+        </p>
+
+        <div class="feature-box">
+            <!-- <div class="feature">
+                <h3>Wishlist</h3>
+                <p>Save favorite games</p>
+            </div>
+
+            <div class="feature">
+                <h3>Library</h3>
+                <p>Play owned games</p>
+            </div>
+
+            <div class="feature">
+                <h3>Secure</h3>
+                <p>Protected account</p>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="form-side">
+
+        <div class="tabs">
+            <a href="/login/">Login</a>
+            <a href="#" class="active">Register</a>
+        </div>
+
+        <h2>Create account</h2>
+        <p class="text">Register to start buying and playing games.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Username</label>
+                <div class="input-box">
+                    <span class="icon">👤</span>
+                    <input type="text" name="username" placeholder="Enter username" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <div class="input-box">
+                    <span class="icon">📧</span>
+                    <input type="email" name="email" placeholder="Enter email" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-box">
+                    <span class="icon">🔒</span>
+                    <input type="password" name="password" id="password" placeholder="Enter password" required>
+                    <span class="eye" onclick="togglePassword()">👁</span>
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+
+        <div class="bottom">
+            Already have account?
+            <a href="/login/">Sign In</a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function togglePassword(){
+    const password = document.getElementById("password");
+
+    if(password.type === "password"){
+        password.type = "text";
+    }else{
+        password.type = "password";
+    }
+}
+</script>
+
+</body>
+</html>

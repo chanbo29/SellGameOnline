@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Users Spending - SellGame</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at 20% 10%,rgba(0,170,255,.18),transparent 30%),
+    radial-gradient(circle at 80% 0%,rgba(124,255,40,.08),transparent 30%),
+    linear-gradient(135deg,#020617,#06111f 55%,#030712);
+    color:white;
+}
+
+.page{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:linear-gradient(180deg,#050d19,#06101d);
+    border-right:1px solid rgba(0,170,255,.16);
+    padding:28px 20px;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:900;
+    color:white;
+    text-decoration:none;
+    display:block;
+    margin-bottom:40px;
+}
+
+.logo span{
+    color:#00aaff;
+}
+
+.menu-label{
+    color:#8090a5;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1.4px;
+    margin-bottom:16px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.menu a{
+    height:58px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:0 18px;
+    border-radius:16px;
+    color:#c8d4e0;
+    text-decoration:none;
+    font-weight:800;
+    transition:.25s;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:linear-gradient(135deg,rgba(0,170,255,.26),rgba(0,170,255,.08));
+    border:1px solid rgba(0,170,255,.42);
+    color:white;
+}
+
+/* MAIN */
+.main{
+    padding:34px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.back{
+    height:48px;
+    padding:0 20px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#008cff,#0057b8);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    font-weight:900;
+}
+
+.search-box{
+    width:380px;
+    height:48px;
+    background:#07111d;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:14px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.search-box input{
+    width:100%;
+    background:none;
+    border:none;
+    outline:none;
+    color:white;
+    font-weight:700;
+}
+
+/* HERO */
+.hero{
+    min-height:240px;
+    border-radius:26px;
+    padding:34px;
+    margin-bottom:28px;
+    background:
+    linear-gradient(90deg,rgba(3,7,18,.94),rgba(6,17,31,.62)),
+    url("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1551360/library_hero.jpg")
+    center/cover no-repeat;
+    border:1px solid rgba(0,170,255,.22);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    box-shadow:0 30px 80px rgba(0,0,0,.42);
+}
+
+.hero h1{
+    font-size:44px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#a8b3c2;
+    font-size:17px;
+}
+
+.hero-stat{
+    background:rgba(7,17,29,.88);
+    border:1px solid rgba(0,170,255,.25);
+    border-radius:20px;
+    padding:20px 26px;
+    text-align:center;
+}
+
+.hero-stat b{
+    display:block;
+    font-size:36px;
+    color:#00aaff;
+}
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.stat-card{
+    padding:24px;
+    border-radius:20px;
+    background:linear-gradient(180deg,rgba(7,17,30,.96),rgba(3,10,19,.96));
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-icon{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:rgba(0,170,255,.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+.stat-title{
+    color:#9ca8b8;
+    font-weight:800;
+}
+
+.stat-value{
+    margin-top:10px;
+    font-size:32px;
+    font-weight:900;
+    color:#00aaff;
+}
+
+.stat-card.green .stat-value{
+    color:#7CFF28;
+}
+
+.stat-card.orange .stat-value{
+    color:#f59e0b;
+}
+
+/* PANEL */
+.panel{
+    background:linear-gradient(180deg,rgba(7,17,30,.96),rgba(3,10,19,.96));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 18px 55px rgba(0,0,0,.35);
+}
+
+.panel-head{
+    padding:22px 26px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.panel-title{
+    font-size:22px;
+    font-weight:900;
+}
+
+.export-btn{
+    height:42px;
+    padding:0 18px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#42ff1f,#138a00);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    font-weight:900;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    padding:16px 22px;
+    text-align:left;
+    color:#00aaff;
+    background:rgba(255,255,255,.03);
+    font-size:12px;
+    letter-spacing:.5px;
+}
+
+td{
+    padding:18px 22px;
+    color:#d8e3ef;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+tr:hover{
+    background:rgba(0,170,255,.06);
+}
+
+.user-cell{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#00aaff,#7CFF28);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#030712;
+    font-weight:900;
+}
+
+.email{
+    color:#9ca8b8;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.orders{
+    color:#00aaff;
+    font-weight:900;
+}
+
+.price{
+    color:#7CFF28;
+    font-weight:900;
+}
+
+.date{
+    color:#9ca8b8;
+}
+
+.badge{
+    display:inline-block;
+    padding:7px 11px;
+    border-radius:999px;
+    background:rgba(124,255,40,.12);
+    color:#7CFF28;
+    font-size:12px;
+    font-weight:900;
+}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+    .page{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        display:none;
+    }
+
+    .hero,
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:18px;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        min-width:850px;
+    }
+
+    .panel{
+        overflow-x:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <aside class="sidebar">
+        <a href="/" class="logo">SELL<span>GAME</span></a>
+
+        <div class="menu-label">ADMIN MENU</div>
+
+        <nav class="menu">
+            <a href="/">🏪 Game Store</a>
+            <a href="/admin-dashboard/">🎮 Dashboard</a>
+            <a href="/admin-users/" class="active">👥 Users & Spending</a>
+            <a href="/admin/">⚙ Admin Control Panel</a>
+            <!-- <a href="/add/">➕ Add Game</a> -->
+            <!-- <a href="/history/">🧾 Orders</a> -->
+            <a href="/logout/" onclick="return confirm('Logout now?')">↪ Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <!-- <a href="/admin-dashboard/" class="back">← Back Dashboard</a> -->
+
+            <div class="search-box">
+            
+                <input type="text" id="searchInput" placeholder="Search user..." onkeyup="filterUsers()">
+            </div>
+        </div>
+
+        <section class="hero">
+            <div>
+                <h1>Users & Spending</h1>
+                <p>View all registered users, order count, and how much they spend.</p>
+            </div>
+
+            <div class="hero-stat">
+                <b>{{ users|length }}</b>
+                <span>Total Users</span>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-title">Registered Users</div>
+                <div class="stat-value">{{ users|length }}</div>
+            </div>
+
+            <div class="stat-card green">
+                <div class="stat-icon">💰</div>
+                <div class="stat-title">Top Spending</div>
+                <div class="stat-value">
+                    {% if users.0.total_spent %}
+                        ${{ users.0.total_spent }}
+                    {% else %}
+                        $0
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="stat-card orange">
+                <div class="stat-icon">🛒</div>
+                <div class="stat-title">Top Orders</div>
+                <div class="stat-value">
+                    {% if users.0.total_orders %}
+                        {{ users.0.total_orders }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <div class="panel-title">👥 User Purchase Summary</div>
+                <a href="/admin-dashboard/" class="export-btn">Dashboard</a>
+            </div>
+
+            <table>
+                <tr>
+                    <th>USER</th>
+                    <th>EMAIL</th>
+                    <th>TOTAL ORDERS</th>
+                    <th>TOTAL SPEND</th>
+                    <th>STATUS</th>
+                    <th>DATE JOINED</th>
+                </tr>
+
+                {% for user in users %}
+                <tr class="user-row" data-name="{{ user.username|lower }}" data-email="{{ user.email|lower }}">
+                    <td>
+                        <div class="user-cell">
+                            <div class="avatar">
+                                {{ user.username|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <b>{{ user.username }}</b>
+                                <div class="email">ID: {{ user.id }}</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>{{ user.email }}</td>
+
+                    <td class="orders">
+                        {{ user.total_orders }}
+                    </td>
+
+                    <td class="price">
+                        ${{ user.total_spent|default:0 }}
+                    </td>
+
+                    <td>
+                        <span class="badge">Active</span>
+                    </td>
+
+                    <td class="date">
+                        {{ user.date_joined }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No users found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+function filterUsers(){
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.querySelectorAll(".user-row");
+
+    rows.forEach(row => {
+        const name = row.dataset.name;
+        const email = row.dataset.email;
+
+        if(name.includes(input) || email.includes(input)){
+            row.style.display = "";
+        }else{
+            row.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

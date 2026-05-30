@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>About Us - SellGame Online</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top left,#1b2838,#0f1722 55%,#070b10);
+    color:white;
+}
+
+/* HEADER */
+
+.header{
+    height:86px;
+    padding:0 55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    background:
+    linear-gradient(90deg,#07111d,#101b2b,#07111d);
+
+    border-bottom:1px solid rgba(102,192,244,0.18);
+}
+
+.logo{
+    color:#66c0f4;
+    font-size:2rem;
+    font-weight:900;
+    text-decoration:none;
+}
+
+.logo span{
+    color:white;
+}
+
+.back-btn{
+    padding:13px 22px;
+
+    color:white;
+    text-decoration:none;
+    font-weight:800;
+
+    background:
+    linear-gradient(to bottom,#8bc53f,#5d9122);
+
+    border-radius:14px;
+
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* HERO */
+
+.hero{
+    padding:80px 40px 40px;
+    text-align:center;
+}
+
+.hero-badge{
+    display:inline-block;
+
+    padding:10px 18px;
+    margin-bottom:22px;
+
+    background:#1b2838;
+
+    border:1px solid #2a475e;
+    border-radius:999px;
+
+    color:#66c0f4;
+    font-weight:800;
+}
+
+.hero h1{
+    font-size:4rem;
+    font-weight:900;
+    margin-bottom:18px;
+}
+
+.hero p{
+    max-width:850px;
+    margin:auto;
+
+    color:#c7d5e0;
+    line-height:1.8;
+}
+
+/* CONTENT */
+
+.about-wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:40px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+}
+
+.card{
+    background:
+    linear-gradient(180deg,#1b2838,#111827);
+
+    border:1px solid #2a475e;
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,0.35);
+}
+
+.card h2{
+    color:#66c0f4;
+    font-size:1.5rem;
+    margin-bottom:16px;
+}
+
+.card p{
+    color:#c7d5e0;
+    line-height:1.8;
+}
+
+/* TEAM */
+
+.team-section{
+    margin-top:35px;
+
+    background:
+    linear-gradient(180deg,#1b2838,#111827);
+
+    border:1px solid #2a475e;
+    border-radius:22px;
+
+    padding:30px;
+}
+
+.team-section h2{
+    color:#66c0f4;
+    margin-bottom:24px;
+}
+
+.team-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:18px;
+}
+
+.member{
+    background:#0f1722;
+
+    border:1px solid #2a475e;
+    border-radius:18px;
+
+    padding:20px;
+
+    transition:0.3s;
+}
+
+.member:hover{
+    transform:translateY(-5px);
+    border-color:#66c0f4;
+}
+
+.avatar{
+    width:100px;
+    height:100px;
+    margin:auto;
+    margin-bottom:18px;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid #66c0f4;
+    box-shadow:0 0 20px rgba(102,192,244,.3);
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.member h3{
+    font-size:1rem;
+    margin-bottom:8px;
+}
+
+.member p{
+    color:#8f98a0;
+    line-height:1.6;
+    font-size:0.9rem;
+}
+
+/* TIMELINE */
+
+.timeline{
+    margin-top:35px;
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+}
+
+.timeline-card{
+    background:#111827;
+
+    border:1px solid #2a475e;
+    border-radius:20px;
+
+    padding:26px;
+}
+
+.timeline-card h2{
+    color:#8bc53f;
+    margin-bottom:12px;
+}
+
+.timeline-card p{
+    color:#c7d5e0;
+    line-height:1.8;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    color:#8f98a0;
+    padding:40px;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+    .info-grid,
+    .timeline{
+        grid-template-columns:1fr;
+    }
+
+    .team-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .header{
+        height:auto;
+        padding:20px;
+        flex-direction:column;
+        gap:16px;
+    }
+
+    .hero h1{
+        font-size:2.5rem;
+    }
+
+    .team-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+{% load static %}
+<header class="header">
+
+    <a href="/" class="logo">
+        SELL<span>GAME</span>ONLINE
+    </a>
+
+    <a href="/" class="back-btn">
+        Back
+    </a>
+
+</header>
+
+<section class="hero">
+
+    <div class="hero-badge">
+        About Our Project
+    </div>
+
+    <h1>
+        About Us
+    </h1>
+
+    <p>
+        SellGame Online is a web-based game store system created to help users
+        search, view, buy, and manage games easily through the internet.
+    </p>
+
+</section>
+
+<div class="about-wrapper">
+
+    <div class="info-grid">
+
+        <div class="card">
+            <h2>1. What is your project system?</h2>
+
+            <p>
+                Our project system is a website for selling games online.
+                Customers can search, view, and purchase different types of games.
+                Users can create accounts, add games to cart, make payments,
+                and view purchase history after buying games.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>2. Why did you create this system?</h2>
+
+            <p>
+                We created this project because many gamers want a simple and fast
+                way to buy games online without going to physical stores.
+                This system is convenient, secure, and user-friendly.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="timeline">
+
+        <div class="timeline-card">
+            <h2>3. Project Completion</h2>
+
+            <p>
+                The project will be completed by Week 12 and prepared for
+                presentation and demo during Week 12 to Week 14.
+            </p>
+        </div>
+
+        <div class="timeline-card">
+            <h2>Admin Features</h2>
+
+            <p>
+                The admin dashboard allows the team to manage games, users,
+                orders, purchase history, payment information, and sales records.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="team-section">
+
+        <h2>4. Team Members Responsibility</h2>
+
+        <div class="team-grid">
+
+            <div class="member">
+                <div class="avatar">
+                    <img src="{% static 'images/T01.jpg' %}"
+                        alt="Chhoung Bunchhorng">
+                </div>
+                <h3>Chhoung Bunchhorng</h3>
+                <p>
+                    Responsible for organizing and leading the topic
+                    related to game sales and introduction.
+                </p>
+            </div>
+
+            <div class="member">
+                <div class="avatar">
+                    <img src="{% static 'images/Doem_Vichka.jpg' %}"
+                        alt="Doem Vichka">
+                </div>
+                <h3>Doem Vichka</h3>
+                <p>
+                    Responsible for adding and updating games.
+                </p>
+            </div>
+
+            <div class="member">
+                <div class="avatar">
+                    <img src="{% static 'images/Chhum Ratha.jpg' %}"
+                        alt="Chhum Ratha">
+                </div>
+                <h3>Chhum Ratha</h3>
+                <p>
+                    Responsible for deleting and purchasing games.
+                </p>
+            </div>
+
+            <div class="member">
+                <div class="avatar">
+                    <img src="{% static 'images/Chheng_Chanbo.jpg' %}"
+                        alt="Chheng Chanbo">
+                </div>
+                <h3>Chheng Chanbo</h3>
+                <p>
+                    Responsible for reviewing and explaining backend
+                    <br>
+                    (admin code.)
+                </p>
+            </div>
+
+            <div class="member">
+                <div class="avatar">
+                    <img src="{% static 'images/Sophat_Thanit.jpg' %}"
+                        alt="Sophat Thanit">
+                </div>
+                <h3>Sophat Thanit</h3>
+                <p>
+                    Responsible for reviewing and explaining frontend code.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    © 2026 Sell Game Online. Sell Game Online Management System.
+</div>
+
+</body>
+</html>

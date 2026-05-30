@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Edit Game</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter,sans-serif;
+}
+
+body{
+    background:
+    linear-gradient(rgba(0,0,0,.75),
+    rgba(0,0,0,.85)),
+    url('https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg')
+    center/cover fixed;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px;
+}
+
+.edit-container{
+    width:100%;
+    max-width:720px;
+
+    background:#16202d;
+
+    border:1px solid #2a475e;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.45);
+}
+
+/* HEADER */
+
+.edit-header{
+    padding:30px;
+
+    background:
+    linear-gradient(90deg,#1b2838,#223548);
+
+    border-bottom:1px solid #2a475e;
+}
+
+.edit-title{
+    font-size:2rem;
+    font-weight:800;
+
+    color:#66c0f4;
+
+    margin-bottom:8px;
+}
+
+.edit-subtitle{
+    color:#8f98a0;
+}
+
+/* FORM */
+
+.form-body{
+    padding:30px;
+}
+
+.form-group{
+    margin-bottom:22px;
+}
+
+label{
+    display:block;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+    color:#c7d5e0;
+}
+
+input,
+textarea{
+    width:100%;
+
+    padding:14px 16px;
+
+    border-radius:12px;
+
+    border:1px solid #2a475e;
+
+    background:#0f1722;
+
+    color:white;
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:.3s;
+}
+
+input:focus,
+textarea:focus{
+    border-color:#66c0f4;
+
+    box-shadow:
+    0 0 12px rgba(102,192,244,.3);
+}
+
+textarea{
+    resize:none;
+    height:140px;
+}
+
+/* IMAGE */
+
+.preview-box{
+    width:100%;
+    height:240px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    margin-bottom:18px;
+
+    border:1px solid #2a475e;
+}
+
+.preview-box img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+/* BUTTONS */
+
+.button-row{
+    display:flex;
+    gap:16px;
+
+    margin-top:25px;
+}
+
+.save-btn,
+.cancel-btn{
+    flex:1;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:1rem;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.save-btn{
+    background:
+    linear-gradient(to bottom,
+    #8bc53f,
+    #5d9122);
+
+    color:white;
+}
+
+.save-btn:hover{
+    transform:translateY(-2px);
+}
+
+.cancel-btn{
+    background:#223548;
+    color:#c7d5e0;
+}
+
+.cancel-btn:hover{
+    background:#2d4258;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="edit-container">
+
+    <!-- HEADER -->
+
+    <div class="edit-header">
+
+        <div class="edit-title">
+        Edit Game
+        </div>
+
+        <div class="edit-subtitle">
+            Update game information
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="form-body">
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <!-- IMAGE PREVIEW -->
+            <div class="preview-box">
+                {% if game.image %}
+                <img src="{{ game.image.url }}">
+                {% else %}
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg">
+                {% endif %}
+            </div>
+            <!-- TITLE -->
+            <div class="form-group">
+                <label>Game Title</label>
+                <input type="text" name="title" value="{{ game.title }}">
+            </div>
+            <!-- PRICE -->
+            <div class="form-group">
+                <label>Price ($)</label>
+                <input type="number" step="0.01" name="original_price" value="{{ game.original_price }}">
+            </div>
+            <!-- DISCOUNT -->
+            <div class="form-group">
+                <label>Discount (%)</label>
+                <input type="number" name="discount_percent" value="{{ game.discount_percent }}">
+            </div>
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description">{{ game.description }}</textarea>
+            </div>
+            <!-- IMAGE -->
+            <div class="form-group">
+                <label>Change Image</label>
+                <input type="file" name="image">
+            </div>
+            <!-- BUTTONS -->
+            <div class="button-row">
+                <button type="submit" class="save-btn">
+                      Save Changes
+                </button>
+                <a href="/"
+                   style="flex:1;">
+                    <button type="button" class="cancel-btn">
+                        Cancel
+                    </button>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

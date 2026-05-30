@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Purchase History - SellGame</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top left,rgba(102,192,244,.18),transparent 35%),
+    linear-gradient(135deg,#0b141d,#101822 55%,#05080d);
+    color:white;
+}
+
+.page{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:linear-gradient(180deg,#0b141d,#101822);
+    border-right:1px solid rgba(102,192,244,.18);
+    padding:32px 14px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:900;
+    color:#66c0f4;
+    text-decoration:none;
+    display:block;
+    margin-bottom:42px;
+}
+
+.logo span{
+    color:white;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.menu a{
+    height:56px;
+    padding:0 20px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    color:#c7d5e0;
+    text-decoration:none;
+    font-weight:900;
+}
+
+.menu a:hover,
+.menu a.active{
+    background:linear-gradient(135deg,#1b2838,#2a475e);
+    color:white;
+    box-shadow:0 12px 30px rgba(102,192,244,.18);
+}
+
+/* MAIN */
+.main{
+    padding:34px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:34px;
+}
+
+.search-box{
+    width:420px;
+    height:54px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 20px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:white;
+    font-weight:700;
+}
+
+.back-btn{
+    height:52px;
+    padding:0 24px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    font-weight:900;
+}
+
+/* HERO */
+.hero{
+    min-height:300px;
+    border-radius:32px;
+    padding:42px;
+    margin-bottom:32px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:25px;
+    background:
+    linear-gradient(90deg,rgba(5,8,13,.94),rgba(27,40,56,.45)),
+    url("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1551360/library_hero.jpg")
+    center/cover no-repeat;
+    border:1px solid rgba(102,192,244,.24);
+    box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+.hero h1{
+    font-size:56px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#c7d5e0;
+    font-size:18px;
+    line-height:1.7;
+}
+
+.hero-stat{
+    background:rgba(27,40,56,.86);
+    border:1px solid #2a475e;
+    border-radius:22px;
+    padding:22px 28px;
+    text-align:center;
+}
+
+.hero-stat b{
+    display:block;
+    font-size:36px;
+    color:#66c0f4;
+}
+
+/* TOOLBAR */
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:26px;
+    gap:20px;
+}
+
+.tabs{
+    display:flex;
+    gap:14px;
+}
+
+.tab{
+    padding:13px 22px;
+    border-radius:999px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.tab.active{
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+}
+
+.sort{
+    height:46px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:white;
+    border-radius:14px;
+    padding:0 14px;
+    font-weight:800;
+}
+
+/* GRID */
+.history-grid{
+    display:grid;
+    gap:24px;
+}
+
+.history-card{
+    display:grid;
+    grid-template-columns:280px 1fr auto;
+    gap:24px;
+    align-items:center;
+    background:linear-gradient(180deg,#111827,#07111d);
+    border:1px solid rgba(102,192,244,.18);
+    border-radius:26px;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 22px 55px rgba(0,0,0,.35);
+}
+
+.history-card:hover{
+    transform:translateY(-6px);
+    border-color:#66c0f4;
+    box-shadow:0 30px 80px rgba(102,192,244,.18);
+}
+
+.game-cover{
+    height:190px;
+    overflow:hidden;
+    background:#1b2838;
+}
+
+.game-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.35s;
+}
+
+.history-card:hover .game-cover img{
+    transform:scale(1.08);
+}
+
+.history-content{
+    padding:22px 0;
+}
+
+.game-title{
+    font-size:28px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.game-desc{
+    color:#8f98a0;
+    line-height:1.7;
+    max-width:680px;
+    margin-bottom:18px;
+}
+
+.purchase-info{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.info-badge{
+    padding:10px 14px;
+    border-radius:12px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+    font-weight:800;
+    font-size:14px;
+}
+
+.purchase-side{
+    padding-right:26px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:flex-end;
+    min-width:170px;
+}
+
+.price{
+    font-size:30px;
+    font-weight:900;
+    color:#8bc53f;
+    margin-bottom:6px;
+}
+
+.download-btn,
+.delete-btn{
+    height:48px;
+    min-width:150px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-weight:900;
+    transition:.25s;
+}
+
+.download-btn{
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+}
+
+.delete-btn{
+    background:#7f1d1d;
+    color:white;
+}
+
+.download-btn:hover,
+.delete-btn:hover,
+.back-btn:hover{
+    transform:translateY(-3px);
+    filter:brightness(1.1);
+}
+
+/* EMPTY */
+.empty-box{
+    padding:100px 30px;
+    background:#111827;
+    border:1px solid #2a475e;
+    border-radius:28px;
+    text-align:center;
+}
+
+.empty-box h2{
+    font-size:42px;
+    margin-bottom:12px;
+    color:#66c0f4;
+}
+
+.empty-box p{
+    color:#8f98a0;
+}
+
+/* RESPONSIVE */
+@media(max-width:1050px){
+    .page{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        display:none;
+    }
+
+    .history-card{
+        grid-template-columns:1fr;
+    }
+
+    .game-cover{
+        height:240px;
+    }
+
+    .history-content,
+    .purchase-side{
+        padding:22px;
+    }
+
+    .purchase-side{
+        align-items:flex-start;
+    }
+
+    .topbar,
+    .hero,
+    .toolbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .search-box{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    .main{
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <aside class="sidebar">
+        <a href="/" class="logo">SELL<span>GAME</span></a>
+
+        <nav class="menu">
+            <a href="/">🛍 Store</a>
+            <a href="/library/">▥ Library</a>
+            <a href="/wishlist/">❤ Wishlist</a>
+            <a href="/history/" class="active">🧾 History</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="search-box">
+                🔍
+                <input type="text" id="searchInput" placeholder="Search purchase history..." onkeyup="filterHistory()">
+            </div>
+
+            <a href="/" class="back-btn">
+                ← Back Store
+            </a>
+        </div>
+
+        <section class="hero">
+            <div>
+                <h1>Purchase History</h1>
+                <p>View your purchased games, downloads, prices, and transaction records.</p>
+            </div>
+
+            <div class="hero-stat">
+                <b>{{ purchases|length }}</b>
+                <span>Total Purchases</span>
+            </div>
+        </section>
+
+        <div class="toolbar">
+            <div class="tabs">
+                <button class="tab active" onclick="showAll()">All Purchases</button>
+                <button class="tab" onclick="showFree()">Free Games</button>
+            </div>
+
+            <select class="sort" id="sortSelect" onchange="sortHistory()">
+                <option value="recent">Recently Purchased</option>
+                <option value="az">Title A-Z</option>
+                <option value="za">Title Z-A</option>
+            </select>
+        </div>
+
+        {% if purchases %}
+
+        <div class="history-grid" id="historyGrid">
+
+            {% for purchase in purchases %}
+
+            <div class="history-card searchable-card"
+                 data-title="{{ purchase.game.title|lower }}"
+                 data-free="{% if purchase.game.discount_percent == 100 %}true{% else %}false{% endif %}">
+
+                <div class="game-cover">
+                    {% if purchase.game.image %}
+                        <img src="{{ purchase.game.image.url }}">
+                    {% else %}
+                        <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg">
+                    {% endif %}
+                </div>
+
+                <div class="history-content">
+                    <div class="game-title">
+                        {{ purchase.game.title }}
+                    </div>
+
+                    <div class="game-desc">
+                        {{ purchase.game.description|truncatechars:160 }}
+                    </div>
+
+                    <div class="purchase-info">
+                        <div class="info-badge">🎮 PC GAME</div>
+                        <div class="info-badge">📅 {{ purchase.purchased_at }}</div>
+                        <div class="info-badge">✅ Purchased</div>
+                    </div>
+                </div>
+
+                <div class="purchase-side">
+                    <div class="price">
+                        {% if purchase.game.discount_percent == 100 %}
+                            FREE
+                        {% else %}
+                            ${{ purchase.price|floatformat:2 }}
+                        {% endif %}
+                    </div>
+
+                    <a href="/download/{{ purchase.game.id }}/" class="download-btn">
+                        ⬇ Download
+                    </a>
+
+                    <a href="/history/delete/{{ purchase.id }}/"
+                       class="delete-btn"
+                       onclick="return confirm('Delete this purchase history?')">
+                        🗑 Delete
+                    </a>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-box">
+            <h2>No Purchase History</h2>
+            <p>You haven't purchased any games yet.</p>
+        </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+<script>
+function filterHistory(){
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".searchable-card");
+
+    cards.forEach(card => {
+        const title = card.dataset.title;
+
+        if(title.includes(input)){
+            card.style.display = "";
+        }else{
+            card.style.display = "none";
+        }
+    });
+}
+
+function showAll(){
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab")[0].classList.add("active");
+
+    document.querySelectorAll(".searchable-card").forEach(card => {
+        card.style.display = "";
+    });
+}
+
+function showFree(){
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab")[1].classList.add("active");
+
+    document.querySelectorAll(".searchable-card").forEach(card => {
+        card.style.display = card.dataset.free === "true" ? "" : "none";
+    });
+}
+
+function sortHistory(){
+    const grid = document.getElementById("historyGrid");
+    const cards = Array.from(grid.querySelectorAll(".searchable-card"));
+    const value = document.getElementById("sortSelect").value;
+
+    cards.sort((a,b) => {
+        const titleA = a.dataset.title;
+        const titleB = b.dataset.title;
+
+        if(value === "az"){
+            return titleA.localeCompare(titleB);
+        }
+
+        if(value === "za"){
+            return titleB.localeCompare(titleA);
+        }
+
+        return 0;
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+}
+</script>
+
+</body>
+</html>

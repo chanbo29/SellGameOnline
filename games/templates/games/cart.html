@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shopping Cart - SellGame</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background:
+    radial-gradient(circle at top left,rgba(102,192,244,.18),transparent 35%),
+    linear-gradient(135deg,#0b141d,#101822 55%,#05080d);
+    color:white;
+    min-height:100vh;
+}
+
+.page{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:linear-gradient(180deg,#0b141d,#101822);
+    border-right:1px solid rgba(102,192,244,.18);
+    padding:32px 14px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.logo {
+    font-size:22px;
+    font-weight:900;
+    color:#66c0f4;
+    margin-bottom:42px;
+}
+.logo span{
+    color: white;
+}
+
+.side-menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.side-link{
+    height:58px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0 22px;
+    color:var(--text);
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.side-link:hover,
+.side-link.active{
+    background:linear-gradient(135deg,#1b2838,#2a475e);
+    color:white;
+    box-shadow:0 12px 30px rgba(102,192,244,.18);
+}
+
+/* MAIN */
+.main{
+    padding:34px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:34px;
+}
+
+.search-box{
+    width:420px;
+    height:54px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 20px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:white;
+    font-weight:700;
+}
+
+.back-btn{
+    height:52px;
+    padding:0 24px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    font-weight:900;
+}
+
+/* HERO */
+.hero{
+    min-height:280px;
+    border-radius:32px;
+    padding:42px;
+    margin-bottom:32px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:25px;
+    background:
+    linear-gradient(90deg,rgba(5,8,13,.94),rgba(27,40,56,.45)),
+    url("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1551360/library_hero.jpg")
+    center/cover no-repeat;
+    border:1px solid rgba(102,192,244,.24);
+    box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+.hero h1{
+    font-size:56px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#c7d5e0;
+    font-size:18px;
+    line-height:1.7;
+}
+
+.hero-stat{
+    background:rgba(27,40,56,.86);
+    border:1px solid #2a475e;
+    border-radius:22px;
+    padding:22px 28px;
+    text-align:center;
+}
+
+.hero-stat b{
+    display:block;
+    font-size:36px;
+    color:#66c0f4;
+}
+
+/* LAYOUT */
+.cart-layout{
+    display:grid;
+    grid-template-columns:1fr 360px;
+    gap:28px;
+}
+
+.cart-list{
+    display:grid;
+    gap:22px;
+}
+
+/* CART ITEM */
+.cart-card{
+    display:grid;
+    grid-template-columns:260px 1fr auto;
+    gap:24px;
+    align-items:center;
+    background:linear-gradient(180deg,#111827,#07111d);
+    border:1px solid rgba(102,192,244,.18);
+    border-radius:26px;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 22px 55px rgba(0,0,0,.35);
+}
+
+.cart-card:hover{
+    transform:translateY(-6px);
+    border-color:#66c0f4;
+    box-shadow:0 30px 80px rgba(102,192,244,.18);
+}
+
+.image-box{
+    height:180px;
+    position:relative;
+    overflow:hidden;
+    background:#1b2838;
+}
+
+.image-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.35s;
+}
+
+.cart-card:hover .image-box img{
+    transform:scale(1.08);
+}
+
+.discount-badge{
+    position:absolute;
+    top:14px;
+    left:14px;
+    background:linear-gradient(to bottom,#8bc53f,#5d9122);
+    color:white;
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:900;
+}
+
+.cart-info{
+    padding:22px 0;
+}
+
+.cart-info h2{
+    font-size:26px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.stars{
+    color:#ffd54f;
+    margin-bottom:12px;
+    font-weight:900;
+}
+
+.stars span{
+    color:#8f98a0;
+    margin-left:8px;
+}
+
+.desc{
+    color:#8f98a0;
+    line-height:1.7;
+    max-width:620px;
+    margin-bottom:16px;
+}
+
+.price-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.old-price{
+    color:#8f98a0;
+    text-decoration:line-through;
+    font-weight:800;
+}
+
+.price{
+    color:#8bc53f;
+    font-size:28px;
+    font-weight:900;
+}
+
+.btn-row{
+    padding-right:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    min-width:150px;
+}
+
+.buy-btn,
+.remove-btn{
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-weight:900;
+    transition:.25s;
+}
+
+.buy-btn{
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+}
+
+.remove-btn{
+    background:#7f1d1d;
+    color:white;
+}
+
+.buy-btn:hover,
+.remove-btn:hover,
+.back-btn:hover{
+    transform:translateY(-3px);
+    filter:brightness(1.1);
+}
+
+/* SUMMARY */
+.summary{
+    height:max-content;
+    position:sticky;
+    top:28px;
+    background:linear-gradient(180deg,#111827,#07111d);
+    border:1px solid rgba(102,192,244,.2);
+    border-radius:26px;
+    padding:26px;
+    box-shadow:0 22px 55px rgba(0,0,0,.35);
+}
+
+.summary h2{
+    font-size:26px;
+    margin-bottom:22px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    color:#c7d5e0;
+    font-weight:800;
+}
+
+.summary-total{
+    display:flex;
+    justify-content:space-between;
+    margin-top:22px;
+    font-size:28px;
+    font-weight:900;
+}
+
+.summary-total span:last-child{
+    color:#8bc53f;
+}
+
+.checkout-btn{
+    width:100%;
+    height:56px;
+    margin-top:24px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+.continue-btn{
+    width:100%;
+    height:52px;
+    margin-top:14px;
+    border-radius:16px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#66c0f4;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+/* EMPTY */
+.empty{
+    padding:100px 30px;
+    background:#111827;
+    border:1px solid #2a475e;
+    border-radius:28px;
+    text-align:center;
+}
+
+.empty h2{
+    font-size:42px;
+    margin-bottom:12px;
+    color:#66c0f4;
+}
+
+.empty p{
+    color:#8f98a0;
+    margin-bottom:24px;
+}
+
+.empty a{
+    display:inline-flex;
+    padding:15px 28px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+    text-decoration:none;
+    font-weight:900;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+    .page{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        display:none;
+    }
+
+    .cart-layout{
+        grid-template-columns:1fr;
+    }
+
+    .summary{
+        position:relative;
+        top:auto;
+    }
+
+    .cart-card{
+        grid-template-columns:1fr;
+    }
+
+    .image-box{
+        height:240px;
+    }
+
+    .cart-info,
+    .btn-row{
+        padding:22px;
+    }
+
+    .topbar,
+    .hero{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .search-box{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    .main{
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <aside class="sidebar">
+        <div class="logo">SELL<span>GAME</span>ONLINE</div>
+
+        <div class="side-menu">
+            <a href="/" class="side-link">🛍 Store</a>
+            <a href="/library/" class="side-link">▥ Library</a>
+            <a href="/wishlist/" class="side-link">♡ Wishlist</a>
+            <a href="/cart/" class="side-link active">🛒 Cart</a>
+            <!-- <a href="/cart/" class="side-link">🛒 Cart</a> -->
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="search-box">
+                🔍
+                <input type="text" id="searchInput" placeholder="Search cart..." onkeyup="filterCart()">
+            </div>
+
+            <!-- <a href="/" class="back-btn">
+                ← Back Store
+            </a> -->
+        </div>
+
+        <section class="hero">
+            <div>
+                <h1>Shopping Cart</h1>
+                <p>Review your selected games, remove items, or continue to checkout.</p>
+            </div>
+
+            <div class="hero-stat">
+                <b>{{ cart_items|length }}</b>
+                <span>Items</span>
+            </div>
+        </section>
+
+        {% if cart_items %}
+
+        <div class="cart-layout">
+
+            <div class="cart-list">
+
+                {% for item in cart_items %}
+
+                <div class="cart-card searchable-card"
+                     data-title="{{ item.game.title|lower }}">
+
+                    <div class="image-box">
+                        {% if item.game.image %}
+                            <img src="{{ item.game.image.url }}">
+                        {% else %}
+                            <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg">
+                        {% endif %}
+
+                        {% if item.game.discount_percent > 0 %}
+                        <div class="discount-badge">
+                            -{{ item.game.discount_percent }}%
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="cart-info">
+                        <h2>{{ item.game.title }}</h2>
+
+                        <div class="stars">
+                            ★★★★★ <span>(4.8)</span>
+                        </div>
+
+                        <div class="desc">
+                            {{ item.game.description|truncatewords:20 }}
+                        </div>
+
+                        <div class="price-row">
+                            {% if item.game.discount_percent > 0 %}
+                            <span class="old-price">
+                                ${{ item.game.original_price }}
+                            </span>
+                            {% endif %}
+
+                            <span class="price">
+                                {% if item.game.final_price == 0 %}
+                                    FREE
+                                {% else %}
+                                    ${{ item.game.final_price|floatformat:2 }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <a href="/buy/{{ item.game.id }}/" class="buy-btn">
+                            Buy Now
+                        </a>
+
+                        <a href="/cart/remove/{{ item.id }}/"
+                           class="remove-btn"
+                           onclick="return confirm('Remove this game?')">
+                            Remove
+                        </a>
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <aside class="summary">
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Items</span>
+                    <span>{{ cart_items|length }}</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Discount</span>
+                    <span>Applied</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Payment</span>
+                    <span>ABA / KHQR</span>
+                </div>
+
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span>${{ total|floatformat:2 }}</span>
+                </div>
+
+                <a href="/checkout/" class="checkout-btn">
+                    Proceed Checkout
+                </a>
+
+                <a href="/" class="continue-btn">
+                    Continue Shopping
+                </a>
+            </aside>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+            <h2>Your cart is empty</h2>
+            <p>Add games from the store to see them here.</p>
+            <a href="/">Explore Store</a>
+        </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+<script>
+function filterCart(){
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".searchable-card");
+
+    cards.forEach(card => {
+        const title = card.dataset.title;
+
+        if(title.includes(input)){
+            card.style.display = "";
+        }else{
+            card.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

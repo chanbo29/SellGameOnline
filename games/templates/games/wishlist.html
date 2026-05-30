@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wishlist - SellOnlineGame</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background:
+    radial-gradient(circle at top left,rgba(102,192,244,.18),transparent 35%),
+    linear-gradient(135deg,#0b141d,#101822 55%,#05080d);
+    color:white;
+    min-height:100vh;
+}
+
+.page{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:linear-gradient(180deg,#0b141d,#101822);
+    border-right:1px solid rgba(102,192,244,.18);
+    padding:32px 14px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.logo {
+    font-size:22px;
+    font-weight:900;
+    color:#66c0f4;
+    margin-bottom:42px;
+}
+.logo span{
+    color: white;
+}
+
+.side-menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.side-link{
+    height:58px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0 22px;
+    color:var(--text);
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.side-link:hover,
+.side-link.active{
+    background:linear-gradient(135deg,#1b2838,#2a475e);
+    color:white;
+    box-shadow:0 12px 30px rgba(102,192,244,.18);
+}
+
+/* MAIN */
+.main{
+    padding:34px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:34px;
+}
+
+.search-box{
+    width:420px;
+    height:54px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 20px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:none;
+    color:white;
+    font-weight:700;
+}
+
+/* .profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    border-radius:18px;
+    padding:8px 14px;
+}
+
+.profile img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+} */
+
+/* HERO */
+.hero{
+    min-height:300px;
+    border-radius:32px;
+    padding:42px;
+    margin-bottom:36px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:25px;
+    background:
+    linear-gradient(90deg,rgba(5,8,13,.92),rgba(27,40,56,.45)),
+    url("https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/271590/library_hero.jpg")
+    center/cover no-repeat;
+    border:1px solid rgba(102,192,244,.24);
+    box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
+
+.hero h1{
+    font-size:56px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#c7d5e0;
+    font-size:18px;
+}
+
+.hero-stat{
+    background:rgba(27,40,56,.86);
+    border:1px solid #2a475e;
+    border-radius:22px;
+    padding:22px 28px;
+    text-align:center;
+}
+
+.hero-stat b{
+    display:block;
+    font-size:36px;
+    color:#66c0f4;
+}
+
+/* TOOLBAR */
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:26px;
+    gap:20px;
+}
+
+.tabs{
+    display:flex;
+    gap:14px;
+}
+
+.tab{
+    padding:13px 22px;
+    border-radius:999px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.tab.active{
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+}
+
+.sort{
+    height:46px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:white;
+    border-radius:14px;
+    padding:0 14px;
+    font-weight:800;
+}
+
+/* GRID */
+.wishlist-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:26px;
+}
+
+.wishlist-card{
+    background:linear-gradient(180deg,#111827,#07111d);
+    border:1px solid rgba(102,192,244,.18);
+    border-radius:26px;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.wishlist-card:hover{
+    transform:translateY(-8px);
+    border-color:#66c0f4;
+    box-shadow:0 30px 80px rgba(102,192,244,.18);
+}
+
+.cover{
+    height:180px;
+    position:relative;
+    overflow:hidden;
+}
+
+.cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.35s;
+}
+
+.wishlist-card:hover .cover img{
+    transform:scale(1.08);
+}
+
+.heart{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ff4d7a;
+    font-size:22px;
+}
+
+.discount{
+    position:absolute;
+    left:14px;
+    bottom:14px;
+    padding:8px 12px;
+    border-radius:10px;
+    background:#8bc53f;
+    color:white;
+    font-weight:900;
+}
+
+.card-body{
+    padding:22px;
+}
+
+.game-title{
+    font-size:22px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.game-desc{
+    color:#8f98a0;
+    line-height:1.6;
+    min-height:70px;
+    margin-bottom:18px;
+}
+
+.price-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.old-price{
+    color:#8f98a0;
+    text-decoration:line-through;
+    font-weight:800;
+}
+
+.new-price{
+    color:#8bc53f;
+    font-size:25px;
+    font-weight:900;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 48px;
+    gap:12px;
+}
+
+.cart-btn{
+    height:50px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#8bc53f,#5d9122);
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+.remove-btn{
+    height:50px;
+    border-radius:15px;
+    background:#7f1d1d;
+    color:white;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+/* EMPTY */
+.empty{
+    padding:100px 30px;
+    background:#111827;
+    border:1px solid #2a475e;
+    border-radius:28px;
+    text-align:center;
+}
+
+.empty h2{
+    font-size:42px;
+    margin-bottom:12px;
+}
+
+.empty p{
+    color:#8f98a0;
+    margin-bottom:24px;
+}
+
+.empty a{
+    display:inline-flex;
+    padding:15px 28px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#66c0f4,#1b6fa8);
+    color:white;
+    text-decoration:none;
+    font-weight:900;
+}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+    .page{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        display:none;
+    }
+
+    .hero{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .search-box{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    .main{
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .toolbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <aside class="sidebar">
+        <div class="logo">SELL<span>GAME</span>ONLINE</div>
+
+        <div class="side-menu">
+            <a href="/" class="side-link">🛍 Store</a>
+            <a href="/library/" class="side-link">▥ Library</a>
+            <a href="/wishlist/" class="side-link active">♡ Wishlist</a>
+            <a href="/cart/" class="side-link">🛒 Cart</a>
+            <!-- <a href="/cart/" class="side-link">🛒 Cart</a> -->
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="search-box">
+                🔍
+                <input type="text" id="searchInput" placeholder="Search wishlist..." onkeyup="filterWishlist()">
+            </div>
+
+            <div class="profile">
+                <!-- <img src="https://www.vhv.rs/dpng/d/415-4150476_online-selling-hd-png-download.png">
+                <div>
+                    <b>{{ request.user.username }}</b><br>
+                    <small style="color:#8bc53f;">Online</small>
+                </div> -->
+            </div>
+        </div>
+
+        <section class="hero">
+            <div>
+                <h1>Wishlist</h1>
+                <p>Your saved games, discounts, and future purchases in one place.</p>
+            </div>
+
+            <div class="hero-stat">
+                <b>{{ wishlist_items|length }}</b>
+                <span>Saved Games</span>
+            </div>
+        </section>
+
+        <div class="toolbar">
+            <div class="tabs">
+                <button class="tab active" onclick="showAll()">All Games</button>
+                <button class="tab" onclick="showDiscounts()">Discounts</button>
+            </div>
+
+            <select class="sort" id="sortSelect" onchange="sortWishlist()">
+                <option value="recent">Recently Added</option>
+                <option value="az">Title A-Z</option>
+                <option value="za">Title Z-A</option>
+            </select>
+        </div>
+
+        {% if wishlist_items %}
+
+        <div class="wishlist-grid" id="wishlistGrid">
+
+            {% for item in wishlist_items %}
+
+            <div class="wishlist-card searchable-card"
+                 data-title="{{ item.game.title|lower }}"
+                 data-discount="{{ item.game.discount_percent }}">
+
+                <div class="cover">
+                    {% if item.game.image %}
+                        <img src="{{ item.game.image.url }}">
+                    {% else %}
+                        <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg">
+                    {% endif %}
+
+                    <div class="heart">♥</div>
+
+                    {% if item.game.discount_percent > 0 %}
+                    <div class="discount">
+                        -{{ item.game.discount_percent }}%
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+
+                    <div class="game-title">
+                        {{ item.game.title }}
+                    </div>
+
+                    <div class="game-desc">
+                        {{ item.game.description|truncatechars:110 }}
+                    </div>
+
+                    <div class="price-row">
+                        {% if item.game.discount_percent > 0 %}
+                            <span class="old-price">${{ item.game.original_price }}</span>
+                        {% endif %}
+
+                        <span class="new-price">
+                            ${{ item.game.final_price|floatformat:2 }}
+                        </span>
+                    </div>
+
+                    <div class="actions">
+                        <a href="/cart/add/{{ item.game.id }}/" class="cart-btn">
+                            🛒 Add Cart
+                        </a>
+
+                        <a href="/wishlist/remove/{{ item.game.id }}/" class="remove-btn">
+                            🗑
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+            <h2>Your wishlist is empty</h2>
+            <p>Browse the store and save your favorite games.</p>
+            <a href="/">Explore Store</a>
+        </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+<script>
+function filterWishlist(){
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".searchable-card");
+
+    cards.forEach(card => {
+        const title = card.dataset.title;
+
+        if(title.includes(input)){
+            card.style.display = "";
+        }else{
+            card.style.display = "none";
+        }
+    });
+}
+
+function showAll(){
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab")[0].classList.add("active");
+
+    document.querySelectorAll(".searchable-card").forEach(card => {
+        card.style.display = "";
+    });
+}
+
+function showDiscounts(){
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab")[1].classList.add("active");
+
+    document.querySelectorAll(".searchable-card").forEach(card => {
+        const discount = parseInt(card.dataset.discount);
+
+        if(discount > 0){
+            card.style.display = "";
+        }else{
+            card.style.display = "none";
+        }
+    });
+}
+
+function sortWishlist(){
+    const grid = document.getElementById("wishlistGrid");
+    const cards = Array.from(grid.querySelectorAll(".searchable-card"));
+    const value = document.getElementById("sortSelect").value;
+
+    cards.sort((a,b) => {
+        const titleA = a.dataset.title;
+        const titleB = b.dataset.title;
+
+        if(value === "az"){
+            return titleA.localeCompare(titleB);
+        }
+
+        if(value === "za"){
+            return titleB.localeCompare(titleA);
+        }
+
+        return 0;
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Game - Sell Online Game</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#1b2838,#0b1118 65%);
+    color:white;
+    padding:35px;
+}
+
+.topbar{
+    max-width:1250px;
+    margin:0 auto 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:2rem;
+    font-weight:900;
+    color:#66c0f4;
+}
+
+.logo span{
+    color:#8bc53f;
+}
+
+.back-btn{
+    padding:13px 22px;
+    background:#1b2838;
+    border:1px solid #2a475e;
+    color:#c7d5e0;
+    text-decoration:none;
+    border-radius:14px;
+    font-weight:800;
+}
+
+.page{
+    max-width:1250px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:30px;
+}
+
+.card{
+    background:linear-gradient(180deg,#1b2838,#111827);
+    border:1px solid #2a475e;
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+}
+
+.preview-img{
+    position:relative;
+    height:330px;
+    background:#0f1722;
+}
+
+.preview-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.discount-badge{
+    position:absolute;
+    top:18px;
+    left:18px;
+    background:#314a0e;
+    color:#beee11;
+    padding:8px 14px;
+    border-radius:8px;
+    font-weight:900;
+}
+
+.preview-body{
+    padding:28px;
+}
+
+.preview-title{
+    font-size:2rem;
+    font-weight:900;
+    margin-bottom:14px;
+}
+
+.preview-desc{
+    color:#9ca3af;
+    line-height:1.8;
+    min-height:80px;
+    margin-bottom:22px;
+}
+
+.price-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.old-price{
+    color:#8f98a0;
+    text-decoration:line-through;
+}
+
+.final-price{
+    color:#beee11;
+    font-size:2rem;
+    font-weight:900;
+}
+
+.form-header{
+    padding:34px;
+    border-bottom:1px solid #2a475e;
+    background:linear-gradient(135deg,#171a21,#223548);
+}
+
+.form-header h1{
+    color:#66c0f4;
+    font-size:2.3rem;
+    margin-bottom:10px;
+}
+
+.form-header p{
+    color:#c7d5e0;
+}
+
+.form-body{
+    padding:34px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    color:#c7d5e0;
+    font-weight:800;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:15px 16px;
+    margin-bottom:20px;
+    border-radius:14px;
+    border:1px solid #2a475e;
+    background:#0f1722;
+    color:white;
+    outline:none;
+    font-size:1rem;
+}
+
+input:focus,
+textarea:focus{
+    border-color:#66c0f4;
+    box-shadow:0 0 20px rgba(102,192,244,.25);
+}
+
+textarea{
+    min-height:135px;
+    resize:vertical;
+}
+
+.two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+.save-btn,
+.cancel-btn{
+    flex:1;
+    height:54px;
+    border-radius:15px;
+    font-weight:900;
+    font-size:1rem;
+}
+
+.save-btn{
+    border:none;
+    color:white;
+    background:linear-gradient(to bottom,#8bc53f,#5d9122);
+    cursor:pointer;
+}
+
+.cancel-btn{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#c7d5e0;
+    text-decoration:none;
+    background:#223548;
+    border:1px solid #2a475e;
+}
+
+@media(max-width:900px){
+    .page{
+        grid-template-columns:1fr;
+    }
+
+    .two-col{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+{% load static %}
+<div class="topbar">
+    <div class="logo">SELL<span>GAME</span></div>
+    <a href="/" class="back-btn">Back to Store</a>
+</div>
+
+<div class="page">
+
+    <div class="card">
+
+        <div class="preview-img">
+            <div class="discount-badge" id="previewDiscount">NEW</div>
+
+            <img id="previewImage"
+                 src="{% static 'images/File_Upload_Icon.jpg' %}", alt="Upload Image">
+        </div>
+
+        <div class="preview-body">
+
+            <div class="preview-title" id="previewTitle">
+                Game Title
+            </div>
+
+            <div class="preview-desc" id="previewDesc">
+                Game description preview will appear here.
+            </div>
+
+            <div class="price-row">
+                <span class="old-price" id="oldPrice"></span>
+                <span class="final-price">$<span id="previewPrice">0.00</span></span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="form-header">
+            <h1>Add New Game</h1>
+            <p>Create a new game product with discount, image, and Steam-style preview.</p>
+        </div>
+
+        <div class="form-body">
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <label>Game Title</label>
+                <input type="text" name="title" id="titleInput" placeholder="Example: Forza Horizon 6" required>
+
+                <div class="two-col">
+
+                    <div>
+                        <label>Original Price</label>
+                        <input type="number" step="0.01" name="original_price" id="priceInput" placeholder="Example: 59.99" required>
+                    </div>
+
+                    <div>
+                        <label>Discount (%)</label>
+                        <input type="number" name="discount_percent" id="discountInput" min="0" max="100" value="0">
+                    </div>
+
+                </div>
+
+                <label>Description</label>
+                <textarea name="description" id="descInput" placeholder="Write game description..."></textarea>
+
+                <label>Game Image</label>
+                <input type="file" name="image" id="imageInput" accept="image/*">
+
+                <div class="buttons">
+                    <button type="submit" class="save-btn">
+                        Save Game
+                    </button>
+
+                    <a href="/" class="cancel-btn">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const titleInput = document.getElementById('titleInput');
+const priceInput = document.getElementById('priceInput');
+const discountInput = document.getElementById('discountInput');
+const descInput = document.getElementById('descInput');
+const imageInput = document.getElementById('imageInput');
+
+titleInput.addEventListener('input', function(){
+    document.getElementById('previewTitle').innerText = this.value || 'Game Title';
+});
+
+descInput.addEventListener('input', function(){
+    document.getElementById('previewDesc').innerText = this.value || 'Game description preview will appear here.';
+});
+
+function updatePrice(){
+    const price = parseFloat(priceInput.value) || 0;
+    const discount = parseFloat(discountInput.value) || 0;
+    const finalPrice = price - (price * discount / 100);
+
+    document.getElementById('previewPrice').innerText = finalPrice.toFixed(2);
+
+    if(discount > 0){
+        document.getElementById('oldPrice').innerText = '$' + price.toFixed(2);
+        document.getElementById('previewDiscount').innerText = '-' + discount + '%';
+    }else{
+        document.getElementById('oldPrice').innerText = '';
+        document.getElementById('previewDiscount').innerText = 'NEW';
+    }
+}
+
+priceInput.addEventListener('input', updatePrice);
+discountInput.addEventListener('input', updatePrice);
+
+imageInput.addEventListener('change', function(){
+    const file = this.files[0];
+
+    if(file){
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+            document.getElementById('previewImage').src = e.target.result;
+        }
+
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+</body>
+</html>

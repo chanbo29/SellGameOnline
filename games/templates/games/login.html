@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SellGame Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#06121d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    color:white;
+}
+
+.auth-wrapper{
+    width:100%;
+    max-width:1150px;
+    min-height:650px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    background:#07101a;
+    border:1px solid rgba(102,192,244,.25);
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+
+/* LEFT SIDE */
+.hero{
+    position:relative;
+    padding:60px 55px;
+    background:
+    linear-gradient(90deg,rgba(6,18,29,.82),rgba(6,18,29,.94)),
+    url("https://images.pexels.com/photos/1038916/pexels-photo-1038916.jpeg?cs=srgb&dl=pexels-fox-58267-1038916.jpg&fm=jpg");
+    background-size:cover;
+    background-position:center;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:900;
+    margin-bottom:90px;
+}
+
+.logo span{
+    color:#58c4ff;
+}
+
+.badge{
+    display:inline-block;
+    padding:10px 18px;
+    border-radius:30px;
+    background:rgba(102,192,244,.12);
+    border:1px solid rgba(102,192,244,.45);
+    color:#8bd7ff;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:64px;
+    line-height:1;
+    font-weight:900;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    color:#58c4ff;
+}
+
+.hero p{
+    max-width:520px;
+    color:#b9c8d8;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.feature-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:80px;
+}
+
+.feature{
+    padding:22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+}
+
+.feature h3{
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.feature p{
+    font-size:14px;
+    line-height:1.5;
+    color:#9fb0c2;
+}
+
+/* RIGHT SIDE */
+.form-side{
+    padding:70px 55px;
+    background:#050b12;
+}
+
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:#161b24;
+    padding:7px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.1);
+    margin-bottom:35px;
+}
+
+.tabs a{
+    text-align:center;
+    text-decoration:none;
+    color:#9fb0c2;
+    font-weight:800;
+    padding:14px;
+    border-radius:13px;
+}
+
+.tabs .active{
+    color:white;
+    background:linear-gradient(135deg,#66c0f4,#2b87c8);
+}
+
+.form-side h2{
+    font-size:36px;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.form-side .text{
+    color:#9fb0c2;
+    margin-bottom:45px;
+    font-size:17px;
+}
+
+.error-box{
+    background:#7f1d1d;
+    padding:13px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.input-group{
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    font-weight:800;
+    color:#c8d4e0;
+    margin-bottom:10px;
+}
+
+.input-box{
+    position:relative;
+}
+
+.input-box input{
+    width:100%;
+    height:56px;
+    border:none;
+    outline:none;
+    border-radius:15px;
+    background:#e8f0ff;
+    color:#111;
+    padding:0 52px;
+    font-weight:600;
+}
+
+.icon{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.eye{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#555;
+}
+
+button{
+    width:100%;
+    height:58px;
+    border:none;
+    border-radius:17px;
+    margin-top:20px;
+    background:linear-gradient(135deg,#8bd13b,#5fa31f);
+    color:white;
+    font-weight:900;
+    cursor:pointer;
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+.bottom{
+    margin-top:25px;
+    text-align:center;
+    color:#99a8b8;
+    font-weight:700;
+}
+
+.bottom a{
+    color:#58c4ff;
+    text-decoration:none;
+    font-weight:900;
+}
+
+.demo{
+    margin-top:25px;
+    padding:18px;
+    border-radius:16px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    color:#aebccc;
+    font-size:14px;
+}
+
+.demo b{
+    color:#58c4ff;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .auth-wrapper{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding:40px 30px;
+    }
+
+    .logo{
+        margin-bottom:50px;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .feature-box{
+        grid-template-columns:1fr;
+        margin-top:40px;
+    }
+
+    .form-side{
+        padding:40px 30px;
+    }
+}
+
+@media(max-width:480px){
+    body{
+        padding:12px;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .form-side h2{
+        font-size:30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+    <!-- LEFT DESIGN -->
+    <div class="hero">
+        <div class="logo"><span>SELL</span>ONLINE<span>GAME</span></div>
+
+        <div class="badge">🔥 Modern Game Store</div>
+
+        <h1>
+            Play more.<br>
+            <span>Pay less.</span>
+        </h1>
+
+        <p>
+            Login or create your account to buy games, manage your wishlist,
+            access your library, and play owned games.
+        </p>
+
+        <div class="feature-box">
+            <!-- <div class="feature">
+                <h3>Wishlist</h3>
+                <p>Save favorite games</p>
+            </div>
+
+            <div class="feature">
+                <h3>Library</h3>
+                <p>Play owned games</p>
+            </div>
+
+            <div class="feature">
+                <h3>Secure</h3>
+                <p>Phone verification</p>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="form-side">
+
+        <div class="tabs">
+            <a href="#" class="active">Login</a>
+            <a href="/register/">Register</a>
+        </div>
+
+        <h2>Welcome back</h2>
+        <p class="text">Login with your username, email, or phone.</p>
+
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Username / Email / Phone</label>
+                <div class="input-box">
+                    <span class="icon">👤</span>
+                    <input type="text" name="username" placeholder="Your Name" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-box">
+                    <span class="icon">🔒</span>
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <span class="eye" onclick="togglePassword()">👁</span>
+                </div>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="bottom">
+            No account?
+            <a href="/register/">Create one</a>
+        </div>
+
+        <!-- <div class="demo">
+            <b>Demo Admin</b><br>
+            👤 admin<br>
+            🔐 Admin@168<br><br>
+
+            <b>Demo User</b><br>
+            👤 user<br>
+            🔐 User@168
+        </div> -->
+
+    </div>
+
+</div>
+
+<script>
+function togglePassword(){
+    const password = document.getElementById("password");
+
+    if(password.type === "password"){
+        password.type = "text";
+    }else{
+        password.type = "password";
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<h1>Total Sales: ${{ total_sales }}</h1>
+
+{% for sale in sales %}
+
+<div style="margin:20px;padding:20px;background:#1b2838;color:white;">
+
+    <h2>{{ sale.game.title }}</h2>
+
+    <p>User: {{ sale.user.username }}</p>
+
+    <p>Price: ${{ sale.price }}</p>
+
+    <p>Date: {{ sale.purchased_at }}</p>
+
+</div>
+
+{% endfor %}

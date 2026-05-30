@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Playing {{ game.title }}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#06121d;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND */
+.bg{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+}
+
+.bg img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:blur(24px) brightness(.28);
+    transform:scale(1.12);
+}
+
+.bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at 18% 18%,rgba(102,192,244,.25),transparent 32%),
+    radial-gradient(circle at 85% 20%,rgba(139,197,63,.16),transparent 32%),
+    linear-gradient(180deg,rgba(6,18,29,.8),#05080d 85%);
+}
+
+/* NAVBAR */
+.topbar{
+    width:100%;
+    height:82px;
+    padding:0 38px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(5,11,18,.72);
+    border-bottom:1px solid rgba(102,192,244,.18);
+    backdrop-filter:blur(18px);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.logo span:first-child{
+    color:#58c4ff;
+}
+
+.logo span:last-child{
+    color:white;
+}
+
+.nav-actions{
+    display:flex;
+    gap:12px;
+}
+
+.nav-btn{
+    padding:12px 18px;
+    border-radius:15px;
+    text-decoration:none;
+    font-weight:900;
+    color:#c7d5e0;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    transition:.25s;
+}
+
+.nav-btn:hover{
+    color:white;
+    border-color:#66c0f4;
+    transform:translateY(-2px);
+}
+
+/* PAGE */
+.page{
+    min-height:calc(100vh - 82px);
+    padding:50px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.launch-card{
+    width:1180px;
+    max-width:100%;
+    display:grid;
+    grid-template-columns:.95fr 1.05fr;
+    overflow:hidden;
+    border-radius:36px;
+    background:rgba(7,16,26,.82);
+    border:1px solid rgba(102,192,244,.22);
+    box-shadow:0 45px 120px rgba(0,0,0,.65);
+    backdrop-filter:blur(24px);
+}
+
+/* LEFT POSTER */
+.poster{
+    min-height:620px;
+    position:relative;
+    overflow:hidden;
+    background:#111827;
+}
+
+.poster img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:1s;
+}
+
+.launch-card:hover .poster img{
+    transform:scale(1.06);
+}
+
+.poster::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(to top,rgba(5,8,13,.92),transparent 55%),
+    linear-gradient(to right,transparent,rgba(7,16,26,.28));
+}
+
+.poster-content{
+    position:absolute;
+    left:30px;
+    right:30px;
+    bottom:30px;
+    z-index:2;
+}
+
+.poster-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 18px;
+    border-radius:999px;
+    background:rgba(139,197,63,.16);
+    border:1px solid rgba(139,197,63,.38);
+    color:#9cff45;
+    font-weight:900;
+    margin-bottom:18px;
+}
+
+.poster-title{
+    font-size:34px;
+    line-height:1.1;
+    font-weight:900;
+}
+
+.poster-sub{
+    margin-top:10px;
+    color:#b9c8d8;
+    line-height:1.6;
+}
+
+/* RIGHT CONTENT */
+.content{
+    padding:55px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.kicker{
+    display:inline-flex;
+    width:max-content;
+    align-items:center;
+    gap:8px;
+    padding:10px 16px;
+    border-radius:999px;
+    background:rgba(102,192,244,.12);
+    border:1px solid rgba(102,192,244,.32);
+    color:#75d2ff;
+    font-weight:900;
+    margin-bottom:22px;
+}
+
+.game-title{
+    font-size:58px;
+    font-weight:900;
+    line-height:1;
+    letter-spacing:-2px;
+    margin-bottom:18px;
+}
+
+.game-title span{
+    color:#58c4ff;
+}
+
+.game-desc{
+    color:#c7d5e0;
+    line-height:1.8;
+    font-size:16px;
+    margin-bottom:30px;
+}
+
+/* INFO GRID */
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-bottom:24px;
+}
+
+.info-card{
+    padding:18px;
+    border-radius:18px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.info-card small{
+    color:#8f98a0;
+    font-weight:800;
+}
+
+.info-card strong{
+    display:block;
+    margin-top:7px;
+    color:white;
+    font-size:15px;
+}
+
+/* LOADING */
+.status-card{
+    padding:24px;
+    border-radius:24px;
+    background:rgba(27,40,56,.78);
+    border:1px solid rgba(102,192,244,.22);
+    margin-bottom:24px;
+}
+
+.status-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:16px;
+}
+
+.status-row span:first-child{
+    color:#d9e6f2;
+    font-weight:900;
+}
+
+.percent{
+    color:#9cff45;
+    font-weight:900;
+    font-size:20px;
+}
+
+.loader{
+    height:18px;
+    background:#070d14;
+    border-radius:999px;
+    overflow:hidden;
+    position:relative;
+}
+
+.loader-fill{
+    width:0%;
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#ff0000,#91ff00);
+    box-shadow:0 0 25px rgba(102,192,244,.45);
+    transition:.25s;
+}
+
+.loader::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.18),
+        transparent
+    );
+    animation:shine 1.4s infinite;
+}
+
+@keyframes shine{
+    from{transform:translateX(-100%);}
+    to{transform:translateX(100%);}
+}
+
+.launch-note{
+    color:#8f98a0;
+    margin-top:14px;
+    font-size:.95rem;
+}
+
+/* READY */
+.action-box{
+    display:none;
+    padding:26px;
+    border-radius:24px;
+    background:linear-gradient(135deg,rgba(139,197,63,.14),rgba(102,192,244,.08));
+    border:1px solid rgba(139,197,63,.35);
+    text-align:center;
+    animation:pop .35s ease;
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:translateY(14px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.ready-title{
+    font-size:28px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.ready-text{
+    color:#c7d5e0;
+    line-height:1.6;
+}
+
+.play-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:22px;
+    padding:17px 34px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#8bd13b,#5fa31f);
+    color:white;
+    text-decoration:none;
+    font-weight:900;
+    box-shadow:0 18px 35px rgba(139,197,63,.22);
+    transition:.25s;
+}
+
+.play-btn:hover{
+    transform:translateY(-3px);
+    filter:brightness(1.1);
+}
+
+/* RESPONSIVE */
+@media(max-width:950px){
+    .launch-card{
+        grid-template-columns:1fr;
+    }
+
+    .poster{
+        min-height:380px;
+    }
+
+    .content{
+        padding:38px 28px;
+    }
+
+    .game-title{
+        font-size:42px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:520px){
+    .topbar{
+        padding:0 18px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .nav-btn{
+        padding:10px 14px;
+        font-size:14px;
+    }
+
+    .page{
+        padding:25px 14px;
+    }
+
+    .game-title{
+        font-size:34px;
+    }
+
+    .poster-title{
+        font-size:26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+    {% if game.image %}
+        <img src="{{ game.image.url }}" alt="{{ game.title }}">
+    {% else %}
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg" alt="Game">
+    {% endif %}
+</div>
+
+<div class="topbar">
+    <div class="logo"><span>SELL</span><span>GAME</span></div>
+
+    <div class="nav-actions">
+        <a href="/library/" class="nav-btn">← Library</a>
+    </div>
+</div>
+
+<div class="page">
+
+    <div class="launch-card">
+
+        <div class="poster">
+            {% if game.image %}
+                <img src="{{ game.image.url }}" alt="{{ game.title }}">
+            {% else %}
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg" alt="Game">
+            {% endif %}
+
+            <div class="poster-content">
+                <div class="poster-badge">
+                    ✅ OWNED GAME
+                </div>
+
+                <div class="poster-title">
+                    {{ game.title }}
+                </div>
+
+                <div class="poster-sub">
+                    Your game license is active and ready for launch.
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <div class="kicker">
+                🚀 LAUNCHING GAME
+            </div>
+
+            <div class="game-title">
+                Ready to <span>Play</span>
+            </div>
+
+            <div class="game-desc">
+                {{ game.description|truncatechars:230 }}
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <small>Status</small>
+                    <strong>Verified</strong>
+                </div>
+
+                <div class="info-card">
+                    <small>Access</small>
+                    <strong>Library</strong>
+                </div>
+
+                <div class="info-card">
+                    <small>Mode</small>
+                    <strong>Online</strong>
+                </div>
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-row">
+                    <span id="statusText">Preparing game files...</span>
+                    <span class="percent" id="percent">0%</span>
+                </div>
+
+                <div class="loader">
+                    <div class="loader-fill" id="loaderFill"></div>
+                </div>
+
+                <div class="launch-note" id="noteText">
+                    Checking your game license...
+                </div>
+
+            </div>
+
+            <div class="action-box" id="readyBox">
+
+                <div class="ready-title">
+                    Game Ready ✔
+                </div>
+
+                <div class="ready-text">
+                    {{ game.title }} is ready to launch. Enjoy your game.
+                </div>
+
+                <a href="https://www.roblox.com/login" class="play-btn">
+                    ▶ Start Playing
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+let percent = 0;
+
+const fill = document.getElementById("loaderFill");
+const percentText = document.getElementById("percent");
+const statusText = document.getElementById("statusText");
+const noteText = document.getElementById("noteText");
+const readyBox = document.getElementById("readyBox");
+
+const loading = setInterval(function(){
+
+    percent += 3;
+
+    if(percent > 100){
+        percent = 100;
+    }
+
+    fill.style.width = percent + "%";
+    percentText.innerText = percent + "%";
+
+    if(percent < 25){
+        statusText.innerText = "Checking game license...";
+        noteText.innerText = "Connecting to SellGame servers...";
+    }else if(percent < 55){
+        statusText.innerText = "Syncing cloud data...";
+        noteText.innerText = "Preparing your library and saved data...";
+    }else if(percent < 85){
+        statusText.innerText = "Loading game assets...";
+        noteText.innerText = "Optimizing graphics, controls, and files...";
+    }else if(percent < 100){
+        statusText.innerText = "Starting game...";
+        noteText.innerText = "Almost ready...";
+    }else{
+        statusText.innerText = "Ready to play ✔";
+        noteText.innerText = "Launch complete.";
+    }
+
+    if(percent >= 100){
+        clearInterval(loading);
+        readyBox.style.display = "block";
+    }
+
+}, 120);
+</script>
+
+</body>
+</html>
